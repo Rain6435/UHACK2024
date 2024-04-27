@@ -15,6 +15,7 @@ import requestors
 import _requests
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # HTTP Methode
 GET = "GET"
@@ -29,9 +30,6 @@ HEALTH = "/health"
 TEAMS_ROUTE = "/teams"
 REQUESTORS_ROUTE = "/requestors"
 REQUESTS_ROUTE = "/requests"
-
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route(V1 + HEALTH, methods=[GET])
 def get_health():
