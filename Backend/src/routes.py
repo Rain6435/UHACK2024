@@ -30,7 +30,9 @@ TEAMS_ROUTE = "/teams"
 REQUESTORS_ROUTE = "/requestors"
 REQUESTS_ROUTE = "/requests"
 
-app = create_cors_enabled_app(__name__)
+app = Flask(__name__)
+CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route(V1 + HEALTH, methods=[GET])
 def get_health():
