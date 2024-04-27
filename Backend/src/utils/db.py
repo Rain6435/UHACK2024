@@ -90,16 +90,16 @@ def get_all_requests():
     cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request")
     reqs = cursor.fetchall()
     return [{
-                'id': req[0], 
-                'location': json.loads(req[1]), 
-                'team_id': req[2], 
-                'is_dangerous': bool(req[3]),
-                'creation_date': req[4],
-                'lead_time': req[5],
-                'fix_date': req[6],
-                "status": req[7],
-                "image": req[8],
-                "requestor_id": req[9],
+        'id': req[0], 
+        'location': json.loads(req[1]), 
+        'team_id': req[2], 
+        'is_dangerous': bool(req[3]),
+        'creation_date': req[4],
+        'lead_time': req[5],
+        'fix_date': req[6],
+        "status": req[7],
+        "image": req[8],
+        "requestor_id": req[9],
     } for req in reqs]
 
 def insert_request(location, is_dangerous, creation_date, adresse, status, image, requestor_id, team_id=None, lead_time=None, fix_date=None):
@@ -109,6 +109,49 @@ def insert_request(location, is_dangerous, creation_date, adresse, status, image
     cursor.close()
     
     return cursor.lastrowid
+
+def modify_request(id, location=None, is_dangerous=None, adresse=None, status=None, image=None, team_id=None, lead_time=None, fix_date=None):
+    cursor = cnx.cursor()
+    
+    # Construct the SQL UPDATE statement
+    query = "UPDATE request SET "
+    values = []
+    
+    # Append each field to the UPDATE statement if its value is not None
+    if location is not None:
+        query += "location = %s, "
+        values.append(location)
+    if is_dangerous is not None:
+        query += "is_dangerous = %s, "
+        values.append(is_dangerous)
+    if adresse is not None:
+        query += "adresse = %s, "
+        values.append(adresse)
+    if status is not None:
+        query += "status = %s, "
+        values.append(status)
+    if image is not None:
+        query += "image = %s, "
+        values.append(image)
+    if team_id is not None:
+        query += "team_id = %s, "
+        values.append(team_id)
+    if lead_time is not None:
+        query += "lead_time = %s, "
+        values.append(lead_time)
+    if fix_date is not None:
+        query += "fix_date = %s, "
+        values.append(fix_date)
+    
+    # Remove the trailing comma and space
+    query = query.rstrip(', ')
+    query += " WHERE id = %s"
+    values.append(id)
+    cursor.execute(query, values)
+    cnx.commit()
+    cursor.close()
+    
+    return id
 
 def get_requestor_by_tel(tel):
     cursor = cnx.cursor()
@@ -166,3 +209,4 @@ def insert_requestor(firstname, lastname, email, tel, adresse=None,):
     cursor.close()
     
     return last_insert_id
+

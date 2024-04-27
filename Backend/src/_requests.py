@@ -10,7 +10,8 @@ from utils.db import (
     get_requestor_by_email, 
     get_requestor_by_name_and_address, 
     get_requestor_by_tel, 
-    insert_requestor
+    insert_requestor,
+    modify_request
 )
 from utils.csv_util import get_voie_routier
 from utils.date import get_utc_now
@@ -28,7 +29,7 @@ def get_requests(request):
 
 def create_request(request):
     body = request.json
-    
+
     adresse_componenet = body.get('potholeAddress').get("address_components")
     adresse = body.get('potholeAddress').get("formatted_address")
     dangerous = body.get('dangerous')
@@ -37,18 +38,24 @@ def create_request(request):
     firstname = body.get('userFname')
     lastname = body.get('userLname')
     tel = body.get('telephone')
-
+    team_id = body.get('team_id')
+    lead_time = body.get('lead_time')
+    fix_date = body.get('fix_date')
 
     route = [a['long_name'] for a in adresse_componenet if a.get('types')[0] == 'route'][0]
-
-    print(route)
-
+    
     # Find location_id
     df = get_voie_routier()
     location = json.loads(df.loc[df['NOM_TOPO'] == route].to_json(orient='records'))
     if not location:
         abort(Response(return_error_response("ERR_GENERAL_E001", "Invalid adresse"), HTTP_CODE_FORBIDDEN, content_type=MIME_TYPE_JSON))
-
+    
+    if request.method == "PUT":
+        id = body.get("id")
+        status = body.get("status")
+        req_id = modify_request(id=id, is_dangerous=dangerous, status=status, image=image, team_id=team_id, lead_time=lead_time, fix_date=fix_date)
+        return req_id
+        
     # Add requestor info
     if tel:
         user = get_requestor_by_tel(tel=tel)
