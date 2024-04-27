@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+from flask_cors import CORS
 
 from utils.api_wrapper import (
     return_success_response, 
@@ -27,6 +28,10 @@ HEALTH = "/health"
 TEAMS_ROUTE = "/teams"
 REQUESTORS_ROUTE = "/requestors"
 REQUESTS_ROUTE = "/requests"
+
+app = Flask(__name__)
+app.config['CORS_HEADERS'] = "Content-Type"
+CORS(app)
 
 @app.route(V1 + HEALTH, methods=[GET])
 def get_health():
