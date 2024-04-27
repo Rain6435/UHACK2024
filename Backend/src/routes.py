@@ -4,6 +4,7 @@ from flask_cors import CORS
 
 from utils.api_wrapper import (
     return_success_response, 
+    create_cors_enabled_app,
     HTTP_CODE_OK, 
     HTTP_CODE_CREATED, 
     HTTP_CODE_NO_CONTENT,
@@ -29,9 +30,7 @@ TEAMS_ROUTE = "/teams"
 REQUESTORS_ROUTE = "/requestors"
 REQUESTS_ROUTE = "/requests"
 
-app = Flask(__name__)
-app.config['CORS_HEADERS'] = "Content-Type"
-CORS(app)
+app = create_cors_enabled_app(__name__)
 
 @app.route(V1 + HEALTH, methods=[GET])
 def get_health():
