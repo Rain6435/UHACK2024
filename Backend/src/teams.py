@@ -23,6 +23,8 @@ def delete_team(request):
 def login_team(request):
     id = request.args.get("id", None)
 
+    print("id", id)
+
     if not id:
         abort(Response(return_error_response("ERR_GENERAL_E001", "Missing id"), HTTP_CODE_FORBIDDEN, content_type=MIME_TYPE_JSON))
 
