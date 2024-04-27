@@ -38,10 +38,10 @@ CREATE TABLE `request` (
   `team_id` int(10) DEFAULT NULL,
   `is_dangerous` tinyint(1) NOT NULL,
   `creation_date` date NOT NULL,
-  `lead_time` date NOT NULL,
+  `lead_time` date DEFAULT NULL,
   `fix_date` date DEFAULT NULL,
   `status` varchar(45) NOT NULL,
-  `image_path` text DEFAULT NULL,
+  `image` text DEFAULT NULL,
   `requestor_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -55,7 +55,7 @@ CREATE TABLE `requestor` (
   `id` int(10) NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
-  `adresse` varchar(45) NOT NULL,
+  `adresse` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `tel` char(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
