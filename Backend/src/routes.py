@@ -31,7 +31,6 @@ REQUESTORS_ROUTE = "/requestors"
 REQUESTS_ROUTE = "/requests"
 
 app = Flask(__name__)
-CORS(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route(V1 + HEALTH, methods=[GET])
