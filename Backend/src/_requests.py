@@ -1,9 +1,16 @@
+import pandas as pd
+import json
+
 from utils.db import get_all_requests, get_request_id, insert_request
 from utils.csv_util import get_voie_routier
 
 
 def get_requests(request):
     id = request.args.get("id", None)
+
+    df = get_voie_routier()
+    location = df[df['CODEID'] == int(id)]
+    return json.loads(location.to_json(orient='records'))
 
     if id:
         return get_request_id(id)
@@ -12,7 +19,12 @@ def get_requests(request):
 
 def create_request(request):
     body = request.json
-    location_id = body.get('location_id')
+    
+    adresse = body.get('adresse')
+
+    # Find location_id
+    df = get_voie_routier()
+    location = df[df['CODEID'] == id]
 
 
     if (request.method == "POST"):

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2024 at 07:04 PM
+-- Generation Time: Apr 27, 2024 at 10:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,49 +28,14 @@ USE uhack2024;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `location`
---
-
-CREATE TABLE `location` (
-  `MUNID` int(10) DEFAULT NULL,
-  `CODE_ID` int(10) NOT NULL,
-  `SEGMENT` varchar(45) DEFAULT NULL,
-  `TYPE` varchar(45) DEFAULT NULL,
-  `GENERIQUE` varchar(45) DEFAULT NULL,
-  `LIAISON` varchar(45) DEFAULT NULL,
-  `SPECIFIQUE` varchar(45) DEFAULT NULL,
-  `DIRECTION` varchar(45) DEFAULT NULL,
-  `NOM_TOPO` varchar(45) DEFAULT NULL,
-  `COTE` varchar(45) DEFAULT NULL,
-  `ORIENTATION` varchar(45) DEFAULT NULL,
-  `DIREC_UNIQ` varchar(45) DEFAULT NULL,
-  `CIV_GAU_DE` int(11) DEFAULT NULL,
-  `CIV_GAU_A` int(11) DEFAULT NULL,
-  `CIV_DRT_DE` int(11) DEFAULT NULL,
-  `CIV_DRT_A` int(11) DEFAULT NULL,
-  `LIMITE_VIT` int(11) DEFAULT NULL,
-  `HIERARCHIE` int(11) NOT NULL,
-  `ENTITEID` varchar(45) NOT NULL,
-  `GEOM` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `location`
---
-
-INSERT INTO `location` (`MUNID`, `CODE_ID`, `SEGMENT`, `TYPE`, `GENERIQUE`, `LIAISON`, `SPECIFIQUE`, `DIRECTION`, `NOM_TOPO`, `COTE`, `ORIENTATION`, `DIREC_UNIQ`, `CIV_GAU_DE`, `CIV_GAU_A`, `CIV_DRT_DE`, `CIV_DRT_A`, `LIMITE_VIT`, `HIERARCHIE`, `ENTITEID`, `GEOM`) VALUES
-(NULL, 8047, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'abc', NULL);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `request`
 --
 
 CREATE TABLE `request` (
   `id` int(10) NOT NULL,
-  `location_id` int(10) NOT NULL,
-  `team_id` int(10) NOT NULL,
+  `location` text NOT NULL,
+  `adresse` varchar(100) NOT NULL,
+  `team_id` int(10) DEFAULT NULL,
   `is_dangerous` tinyint(1) NOT NULL,
   `creation_date` date NOT NULL,
   `lead_time` date NOT NULL,
@@ -79,14 +44,6 @@ CREATE TABLE `request` (
   `image_path` text DEFAULT NULL,
   `requestor_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `request`
---
-
-INSERT INTO `request` (`id`, `location_id`, `team_id`, `is_dangerous`, `creation_date`, `lead_time`, `fix_date`, `status`, `image_path`, `requestor_id`) VALUES
-(1, 8047, 10, 1, '2024-04-27', '2024-04-30', NULL, 'PENDING', NULL, 8),
-(2, 8047, 10, 1, '2024-04-27', '2024-04-30', NULL, 'PENDING', NULL, 8);
 
 -- --------------------------------------------------------
 
@@ -143,17 +100,10 @@ INSERT INTO `team` (`id`, `name`, `password`, `work_time`, `work_season`, `secte
 --
 
 --
--- Indexes for table `location`
---
-ALTER TABLE `location`
-  ADD PRIMARY KEY (`CODE_ID`);
-
---
 -- Indexes for table `request`
 --
 ALTER TABLE `request`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `foreign_key_location_codeID` (`location_id`),
   ADD KEY `foreign_key_team_teamID` (`team_id`),
   ADD KEY `foreign_key_requestor_requestorID` (`requestor_id`);
 
@@ -200,7 +150,6 @@ ALTER TABLE `team`
 -- Constraints for table `request`
 --
 ALTER TABLE `request`
-  ADD CONSTRAINT `foreign_key_location_codeID` FOREIGN KEY (`location_id`) REFERENCES `location` (`CODE_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `foreign_key_requestor_requestorID` FOREIGN KEY (`requestor_id`) REFERENCES `requestor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `foreign_key_team_teamID` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
