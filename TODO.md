@@ -48,10 +48,11 @@
 		- `id`, `firstname`, `lastname`, `adresse`, `email`, `tel`
 	- Requirements
 		- Actions
+			- can GET own data
+			- Can PUT own data
 			- can POST a request login
 			- can Login with three different ways
 				- Telephone (Optionnel ssi Firstname, lastname, adresse)
-
 			- BONUS: receive updates about their request (if email is present)
 	- Disclaimer
 		- a requestor does NOT need to login to make a request. In fact, their is no login functionnality for the requestor.
