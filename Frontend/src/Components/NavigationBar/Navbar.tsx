@@ -15,7 +15,9 @@ const Navbar: React.FC<Props> = () => {
   return (
     <div className="w-full">
       <div className="navbar bg-base-100 justify-center">
-        <Link to="/">
+        <Link
+          to="/"
+        >
           <div className="w-[50px] mr-auto">
             <button className="btn btn-square btn-ghost">
               <HomeIcon></HomeIcon>
@@ -38,7 +40,9 @@ const Navbar: React.FC<Props> = () => {
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
           >
             <li onClick={handleClick}>
-              <a className="justify-between">Retracer un report</a>
+              <Link to="/track">
+                <p>Retracer un report</p>
+              </Link>
             </li>
             <li onClick={handleClick}>
               <Link to="/login">

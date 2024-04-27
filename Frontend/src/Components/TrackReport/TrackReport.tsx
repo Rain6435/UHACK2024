@@ -1,33 +1,35 @@
 import { useState } from "react";
-import { TeamLogIn } from "../../Tools/AuthUtils";
-import { useMutation } from "react-query";
+import { TrackReport } from "../../Tools/AuthUtils";
+import AlertIcon from "../../assets/AlertIcon";
 import { useNavigate } from "react-router-dom";
-import PersonIconFilled from "../../assets/PersonIconFilled";
+import { useMutation } from "react-query";
 import ServerError from "../../Types/Errors/ServerError";
-import CheckIcon from "../../assets/CheckIcon";
 import BaseDialog from "../Dialogs/BaseDialog";
+import CheckIcon from "../../assets/CheckIcon";
 
 interface Props {}
-
-const Login: React.FC<Props> = () => {
-  const [teamId, setTeamId] = useState<string>("");
-  const navigate = useNavigate();
+const TrackReportComponent: React.FC<Props> = () => {
+  const [reportId, setReportId] = useState<string>("");
   const [buttonState, setButtonState] = useState("default");
-  const TeamLogInMutation = useMutation((credentials:string) =>
-    TeamLogIn(credentials)
+  const navigate = useNavigate();
+
+  const TrackReportMutation = useMutation((credentials: string) =>
+    TrackReport(credentials)
   );
 
-  async function handleLogIn(event: React.FormEvent<HTMLFormElement>) {
+  async function handleTrack(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setButtonState("reqSent");
-    await TeamLogInMutation.mutateAsync(teamId)
-      .then((data) => {
+    console.log(reportId)
+    await TrackReportMutation.mutateAsync(reportId)
+      .then((report) => {
+        console.log(report);
         setButtonState("success");
-        setTimeout(() => {
-          navigate("/team", {
-            state: { info: data.info, teamData: data.requests },
-          });
-        }, 1000);
+        //setTimeout(() => {
+        //  navigate("/report", {
+        //    state: { report: report },
+        //  });
+        //}, 1000);
       })
       .catch((e) => {
         setButtonState("default");
@@ -38,7 +40,7 @@ const Login: React.FC<Props> = () => {
         } else {
           // Show error dialog
           (
-            document.getElementById("loginFail") as HTMLDialogElement
+            document.getElementById("trackFail") as HTMLDialogElement
           ).showModal();
         }
       });
@@ -46,23 +48,22 @@ const Login: React.FC<Props> = () => {
 
   return (
     <div className="card flex flex-col w-96 mt-2 mb-10 m-auto h-1/2">
-      <h2 className="my-4 text-3xl mx-4 font-bold">
-        Veuillez insérer le numéro d'identifiant de votre équipe.
+      <h2 className="my-4 text-3xl mx-4 font-bold m-auto">
+        Veuillez insérer le numéro d'identifiant de votre signalement.
       </h2>
-      <form
-        onSubmit={handleLogIn}
-        className="flex flex-col m-auto bg-base-200 shadow-xl gap-4 rounded-2xl"
-      >
+      <form onSubmit={handleTrack}>
         <label className="input input-bordered flex items-center gap-2 m-2">
-          <PersonIconFilled></PersonIconFilled>
+          <AlertIcon></AlertIcon>
           <input
             type="text"
             className="grow"
-            placeholder="Team ID"
-            value={teamId}
-            onChange={(e) => setTeamId(e.target.value)}
+            placeholder="#12AS34DE"
             required
             autoComplete="off"
+            onChange={(e) => {
+              setReportId(e.target.value);
+            }}
+            value={reportId}
           />
         </label>
         <div className="p-2 w-full m-auto flex">
@@ -76,15 +77,15 @@ const Login: React.FC<Props> = () => {
             <input
               className="btn btn-outline w-full"
               type="submit"
-              value="Se connecter"
+              value="Retrouver le signalement"
             />
           )}
         </div>
       </form>
       <BaseDialog
-        componentName="loginFail"
-        title="Log in failed"
-        message="Oops, there seems to be an error in your email or your password. Please try again."
+        componentName="trackFail"
+        title="Il y a un soucis..."
+        message="Nous n'avons pas pu retrouver le signalement lié à ce numéro de d'identifiant. Assurez vous de l'avoir bien écris, sinon, veuillez contacter le 311 pour plus de support."
       ></BaseDialog>
       <BaseDialog
         componentName="ServerFail"
@@ -95,4 +96,4 @@ const Login: React.FC<Props> = () => {
   );
 };
 
-export default Login;
+export default TrackReportComponent;

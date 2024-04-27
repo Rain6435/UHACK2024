@@ -16,6 +16,7 @@ const Report: React.FC<Props> = () => {
   const [address, setAddress] = useState<any>();
   const [dangerous, setDangerous] = useState(false);
   const [image, setImage] = useState<string>("");
+  const [email,setEmail] = useState<string>("");
 
   const [buttonState, setButtonState] = useState("default");
 
@@ -43,19 +44,21 @@ const Report: React.FC<Props> = () => {
   async function handleReport(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setButtonState("reqSent");
-    console.log({
+    console.log(JSON.stringify({
       userFname: fname,
       userLname: lname,
       potholeAddress: address,
       dangerous: dangerous,
       image: image,
-    });
+      email:email
+    }));
     await CreateReportMutation.mutateAsync({
       userFname: fname,
       userLname: lname,
       potholeAddress: address,
       dangerous: dangerous,
       image: image,
+      email:email
     })
       .then((reportId) => {
         setButtonState("success");
@@ -70,7 +73,7 @@ const Report: React.FC<Props> = () => {
         setButtonState("default");
         if (e instanceof ServerError) {
           (
-            document.getElementById("createFail") as HTMLDialogElement
+            document.getElementById("ServerFail") as HTMLDialogElement
           ).showModal();
         } else {
           // Show error dialog
@@ -113,11 +116,11 @@ const Report: React.FC<Props> = () => {
               />
             </label>
             <label>
-              <p className="m-auto">Adresse</p>
+              <p className="m-auto">Adresse du nid-de-poule</p>
               <Autocomplete
                 apiKey="AIzaSyCE8Sq8qfsnvt2ykcML226K68-naKCWNcw"
                 onPlaceSelected={(place) => {
-                  setAddress(place.formatted_address);
+                  setAddress(place);
                 }}
                 className="input input-bordered ml-auto w-full"
                 options={{
@@ -127,6 +130,17 @@ const Report: React.FC<Props> = () => {
                 placeholder=""
                 required
               ></Autocomplete>
+            </label>
+            <label>
+              <p className="m-auto">Voulez vous être notifié?</p>
+              <input
+                className="input input-bordered ml-auto w-full"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="off"
+                placeholder="Ajouter votre courriel"
+              />
             </label>
             <label className="flex">
               <p className="m-auto">
@@ -175,6 +189,11 @@ const Report: React.FC<Props> = () => {
         componentName="createFail"
         title="Il a y un ick!"
         message="Malheureusement, nous n'avons pas pu traiter votre demande. Veuillez réessayer ultérieurment."
+      ></BaseDialog>
+      <BaseDialog
+        componentName="ServerFail"
+        title="Whoops!"
+        message="Notre serveur n'a pas pu traiter votre demande. Veuillez réessayer plus tard."
       ></BaseDialog>
     </div>
   );
