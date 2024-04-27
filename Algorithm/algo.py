@@ -1,5 +1,7 @@
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
+from dijkistra import dijkistra_magic
+from datetime import datetime
 
 
 street_priority = {
@@ -40,37 +42,16 @@ def schedule_potholes(potholes, teams, streets):
     #  for Main, Connecting, and Local arteries
     #  Those are joined together into 1 chain of potholes before being returned
 
-    chain_of_potholes = dijkistra_magic()
+    chain_of_potholes = dijkistra_magic(sorted_potholes, calculate_distance)
 
     # Now we will separate this chain of potholes in an equitable way, that takes
     # max threshold of hours worked
 
     max_work_time = 480 # in minutes
 
-    team_assignments = assign_potholes(chain_of_potholes, nb_of_teams, max_work_time)
+    team_assignments = assign_potholes(chain_of_potholes, len(teams), max_work_time)
 
     return team_assignments
-
-
-# def find_team(pothole, teams):
-#     '''
-#     Considers the 
-#     Returns the team that should be assigned the pothole
-
-#     '''
-#     address = get_address_string(pothole)
-
-#     # Find the nearest the team to assign the pothole
-#     best_team = 0
-#     best_distance = calculate_distance(teams[0].secteur, address)
-
-#     for i in range(1, len(teams)):
-#         curr_dist = calculate_distance(teams[i].secteur, address)
-
-#         if curr_dist < best_distance:
-#             best_team = i
-    
-#     return i
 
 
 def organize_potholes(potholes):
@@ -159,11 +140,13 @@ def calculate_distance(pothole1, pothole2):
     return geodesic(coords1, coords2).kilometers
 
 
-def date_to_number(pothole):
+def date_to_number(pothole, format='%Y-%m-%d', reference_date=datetime(1970, 1, 1)):
     '''
     Return a numerical value given an SQL data object 
     '''
-    return pothole.creation_date # TODO: update this
+    date_object = datetime.strptime(pothole.date, format)
+    delta = date_object - reference_date
+    return delta.days
 
 
 def get_address_string(pothole):
