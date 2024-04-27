@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 from utils.api_wrapper import (
     return_success_response, 
@@ -14,8 +14,8 @@ import teams
 import requestors
 import _requests
 
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+app = create_cors_enabled_app(__name__)
+
 
 # HTTP Methode
 GET = "GET"
