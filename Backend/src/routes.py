@@ -44,7 +44,7 @@ def post_teams():
 
 @app.route(V1+LOGIN+ REQUESTORS_ROUTE, methods=[POST])
 def login_team():
-    return app.response_class(response=return_success_response(requestors.login_team(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
+    return app.response_class(response=return_success_response(teams.login_team(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
 
 @app.route(V1+ TEAMS_ROUTE, methods=[DELETE])
 def delete_teams():

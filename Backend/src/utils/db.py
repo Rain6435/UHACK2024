@@ -32,7 +32,7 @@ def get_team_by_id(id):
             "image": req[8],
             "requestor_id": req[9],
         } for req in reqs]
-    }
+    } if team else None
 
 def get_all_teams():
     cursor.execute(f"SELECT id, name, password, work_time, work_season, secteur, is_admin FROM team")
