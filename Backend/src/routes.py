@@ -14,7 +14,8 @@ import teams
 import requestors
 import _requests
 
-app = create_cors_enabled_app(__name__)
+app = Flask(__name__)
+CORS(app, support_credentials=True)
 
 
 # HTTP Methode
@@ -22,6 +23,7 @@ GET = "GET"
 POST = "POST"
 PUT = "PUT"
 DELETE = "DELETE"
+OPTIONS = "OPTIONS"
 
 # Routes
 V1 = "/v1"
@@ -77,7 +79,8 @@ def delete_requestors():
 def get_request():
     return app.response_class(response=return_success_response(_requests.get_requests(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
 
-@app.route(V1+ REQUESTS_ROUTE, methods=[PUT, POST])
+@app.route(V1+ REQUESTS_ROUTE, methods=[PUT, POST, OPTIONS])
+@cross_origin(supports_credentials=True)
 def post_request():
     return app.response_class(response=return_success_response(_requests.create_request(request)), status=HTTP_CODE_CREATED, mimetype=MIME_TYPE_JSON)
 
