@@ -28,10 +28,6 @@ TEAMS_ROUTE = "/teams"
 REQUESTORS_ROUTE = "/requestors"
 REQUESTS_ROUTE = "/requests"
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
 @app.route(V1 + HEALTH, methods=[GET])
 def get_health():
     return app.response_class(response=return_success_response('operational'), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
