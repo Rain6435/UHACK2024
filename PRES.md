@@ -14,4 +14,4 @@
 1. L'employée consulte sa page pour voir les tâches qui doit accomplir. 
 	1. EXPLIQUER L'ALGO rythme
 	2. OPTIONNEL: montré l'itinéraire
-2. L'administrateur consulte la page avec le status de tous les équipe
+2. L'administrateur consulte la page avec le status de tous les équipes

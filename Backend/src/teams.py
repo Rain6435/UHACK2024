@@ -24,7 +24,7 @@ def login_team(request):
     body = request.json
     id = body.get("id", None)
 
-    print("id",)
+    print("id", id)
 
     if not id:
         abort(Response(return_error_response("ERR_GENERAL_E001", "Missing id"), HTTP_CODE_FORBIDDEN, content_type=MIME_TYPE_JSON))
