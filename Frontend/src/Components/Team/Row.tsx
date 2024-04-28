@@ -8,14 +8,13 @@ import BaseDialog from "../Dialogs/BaseDialog";
 interface Props {
   report: ReportObjectProps;
   index: number;
-  change: (reportS: ReportObjectProps) => void;
 }
 
 const Row: React.FC<Props> = (props) => {
   const [report, setReport] = useState(props.report);
   const index = props.index;
   const [status, setStatus] = useState("Changer");
-
+  
   const [changed, setChanged] = useState(false);
 
   const UpdateMutation = useMutation((credentials: UpdateProps) =>
@@ -35,11 +34,11 @@ const Row: React.FC<Props> = (props) => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     e.preventDefault();
-    console.log({ id: report.id, status: status });
     await UpdateMutation.mutateAsync({ id: report.id, status: status })
       .then((resStatus) => {
-        if (resStatus == 200) {
+        if (resStatus == 201) {
           setTimeout(() => {
+            setReport({...report,status:status})
             window.location.reload();
           });
         }
@@ -61,7 +60,7 @@ const Row: React.FC<Props> = (props) => {
     <div>
       <li key={index} className="flex">
         <p className="mr-auto my-auto w-1/3">{report.id}</p>
-        <p className="m-auto w-1/3 text-center">{props.report.initialStatus}</p>
+        <p className="m-auto w-1/3 text-center">{props.report.status}</p>
         <div className="w-1/3 flex">
           {changed ? (
             <button

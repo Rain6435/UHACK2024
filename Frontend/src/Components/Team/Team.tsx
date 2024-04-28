@@ -1,27 +1,35 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ReportObjectProps, TeamInfo } from "../../Types/Types";
-import { useState } from "react";
 import Row from "./Row";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { TeamLogIn } from "../../Tools/AuthUtils";
+import { useMutation } from "react-query";
+import ServerError from "../../Types/Errors/ServerError";
 
 interface Props {}
 
 const Team: React.FC<Props> = () => {
   let location = useLocation();
+  const navigate = useNavigate();
   const state = location.state;
-  var reports: ReportObjectProps[] = state.reports;
-  const info:TeamInfo = state.info;
+  const [reports, setReports] = useState<ReportObjectProps[]>([]);
+  const teamId = state.id;
+  const TeamLogInMutation = useMutation((credentials: string) =>
+    TeamLogIn(credentials)
+  );
 
-  function updateReport(report:ReportObjectProps){
-    const f = reports.filter((reportO:ReportObjectProps)=>{
-      return report.id = reportO.id
-    })[0];
-  }
-
+  const [info, setInfo] = useState<TeamInfo>();
+  useEffect(() => {
+    
+  }, []);
   return (
     <div className="flex m-4 flex-col">
       <div className="flex">
-        <h1 className="my-4 text-3xl mx-4 font-bold">Team {info.id}</h1>
-        <h1 className="my-4 text-3xl mx-4 font-bold ml-auto">{info.secteur}</h1>
+        <h1 className="my-4 text-3xl mx-4 font-bold">Team {info?.id}</h1>
+        <h1 className="my-4 text-3xl mx-4 font-bold ml-auto">
+          {info?.secteur}
+        </h1>
       </div>
       <div>
         <h1 className="my-4 text-3xl mx-4 font-bold">
@@ -42,7 +50,7 @@ const Team: React.FC<Props> = () => {
 
       <ul className="flex flex-col gap-4">
         {reports.map((report: ReportObjectProps, index: number) => (
-          <Row index={index} report={report} change = {updateReport}></Row>
+          <Row index={index} report={report}></Row>
         ))}
       </ul>
     </div>

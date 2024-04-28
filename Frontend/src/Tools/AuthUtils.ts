@@ -14,11 +14,11 @@ function API(endpoint: string): string {
 export async function TeamLogIn(teamId: string) {
   try {
     // Send a POST request to the login endpoint of the API with the provided email and password
-    const response: AxiosResponse<any> = await axios.post(API("login"), {
-      teamId: teamId,
+    const response: AxiosResponse<any> = await axios.post(API("v1/teams/login"), {
+      id: teamId,
     });
     const data = response.data;
-    return data;
+    return data.payload;
   } catch (error: any) {
     if (error instanceof AxiosError) {
       // If it's an AxiosError, extract the error message from the response data
@@ -41,20 +41,17 @@ export async function TeamLogIn(teamId: string) {
 
 export async function TrackReport(reportId: string) {
   try {
-    const response: AxiosResponse<any> = await axios.get(API("report"), {
-      params: { reportId: reportId },
+    const response: AxiosResponse<any> = await axios.get(API("v1/requests"), {
+      params: { id: reportId },
     });
     const data = response.data;
-    return data;
+    return data.payload;
   } catch (error) {
     if (error instanceof AxiosError) {
       // If it's an AxiosError, extract the error message from the response data
       switch (error.response?.status) {
         case 404:
-          throw new Error(
-            error.message ||
-              "Could not find wanted report."
-          );
+          throw new Error(error.message || "Could not find wanted report.");
         case 500:
           throw new ServerError(
             error.message ||
@@ -79,15 +76,18 @@ export type ReportProps = {
 };
 export async function CreateReport(report: ReportProps) {
   try {
-    const response: AxiosResponse<any> = await axios.post(API("requests"), {
-      report: report,
-    });
+    const response: AxiosResponse<any> = await axios.post(
+      API("/v1/requests"),
+      report
+    );
     const data = response.data;
-    return data;
+    return data.payload;
   } catch (error) {
     if (error instanceof AxiosError) {
       // If it's an AxiosError, extract the error message from the response data
       switch (error.response?.status) {
+        case 403:
+          throw new Error(error.message || "Cette region n'existe pas.")
         case 404:
           throw new Error(error.message || "Could not create report.");
         case 500:
@@ -112,7 +112,7 @@ export type UpdateProps = {
 
 export async function UpdateStatus(props: UpdateProps) {
   try {
-    const response: AxiosResponse = await axios.put(API("requests"), {
+    const response: AxiosResponse = await axios.put(API("/v1/requests"), {
       id: props.id,
       status: props.status,
     });

@@ -44,14 +44,7 @@ const Report: React.FC<Props> = () => {
   async function handleReport(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setButtonState("reqSent");
-    console.log(JSON.stringify({
-      userFname: fname,
-      userLname: lname,
-      potholeAddress: address,
-      dangerous: dangerous,
-      image: image,
-      email:email
-    }));
+    console.log("here")
     await CreateReportMutation.mutateAsync({
       userFname: fname,
       userLname: lname,
@@ -62,7 +55,7 @@ const Report: React.FC<Props> = () => {
     })
       .then((reportId) => {
         setButtonState("success");
-        setReportId(reportId);
+        setReportId(reportId.payload);
       })
       .then(() => {
         (

@@ -22,10 +22,11 @@ const Login: React.FC<Props> = () => {
     setButtonState("reqSent");
     await TeamLogInMutation.mutateAsync(teamId)
       .then((data) => {
+        console.log(data)
         setButtonState("success");
         setTimeout(() => {
           navigate("/team", {
-            state: { info: data.info, teamData: data.requests },
+            state: { id:teamId },
           });
         }, 1000);
       })
