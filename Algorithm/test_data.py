@@ -5,63 +5,53 @@ from algo import schedule_potholes
 
 fake = Faker()
 
-ottawa_addresses = [
-    "24 Sussex Drive, Ottawa, Canada",
-    "111 Sussex Drive, Ottawa, Canada",
-    "112 Sussex Drive, Ottawa, Canada",
-    "113 Sussex Drive, Ottawa, Canada",
-    "114 Sussex Drive, Ottawa, Canada",
-    "115 Sussex Drive, Ottawa, Canada",
-    "116 Sussex Drive, Ottawa, Canada",
-    "2 Colonel By Drive, Ottawa, Canada",
-    "123 Slater Street, Ottawa, Canada",
-    "124 Slater Street, Ottawa, Canada",
-    "125 Slater Street, Ottawa, Canada",
-    "126 Slater Street, Ottawa, Canada",
-    "127 Slater Street, Ottawa, Canada",
-    "150 Elgin Street, Ottawa, Canada",
-    "100 Laurier Avenue W, Ottawa, Canada",
-    "55 Colonel By Drive, Ottawa, Canada",
-    "1 Vimy Place, Ottawa, Canada",
-    "10 Blackburn Avenue, Ottawa, Canada",
-    "1 Rideau Street, Ottawa, Canada",
-    "900 Montreal Road, Ottawa, Canada",
-    "100 Bayshore Drive, Ottawa, Canada",
-    "240 Sparks Street, Ottawa, Canada",
-    "401 Smyth Road, Ottawa, Canada",
-    "1385 Woodroffe Avenue, Ottawa, Canada",
-    "295 Montreal Road, Ottawa, Canada",
-    "290 Dupuis Street, Ottawa, Canada",
-    "1755 Russell Road, Ottawa, Canada",
-    "333 River Road, Ottawa, Canada",
-    "1200 St Laurent Boulevard, Ottawa, Canada",
-    "101 Centrepointe Drive, Ottawa, Canada",
-    "1600 Stittsville Main Street, Ottawa, Canada",
-    "100 Constellation Drive, Ottawa, Canada",
-    "141 Catherine Street, Ottawa, Canada",
-    "1000 Palladium Drive, Ottawa, Canada",
-    "100 Malvern Drive, Ottawa, Canada",
-    "100 Charlie Rogers Place, Ottawa, Canada",
-    "4801 Riverside Drive, Ottawa, Canada",
-    "1000 Innovation Drive, Ottawa, Canada",
-    "4899 Uplands Drive, Ottawa, Canada",
-    "200 Elgin Street, Ottawa, Canada",
-    "240 Bank Street, Ottawa, Canada",
-    "111 Albert Street, Ottawa, Canada",
-    "160 George Street, Ottawa, Canada",
-    "55 Murray Street, Ottawa, Canada",
-    "130 Sparks Street, Ottawa, Canada",
-    "1500 Carling Avenue, Ottawa, Canada",
-    "2900 Woodroffe Avenue, Ottawa, Canada",
-    "955 Green Valley Crescent, Ottawa, Canada",
-    "359 Terry Fox Drive, Ottawa, Canada"
+gatineau_addresses = [
+    "230 Bd Saint-Joseph, Gatineau, QC J8Y 3X4, Canada",
+    "92 Rue Labelle, Gatineau, QC J8Y, Canada",
+    "Prom. de la Gatineau, Chelsea, QC, Canada",
+    "77 Rue Sherbrooke, Gatineau, QC J8Y 2K8, Canada",
+    "788 Bd la Vérendrye O, Gatineau, QC J8R 4A8, Canada",
+    "230 Rue Saint-Louis, Gatineau, QC J8P 8B3, Canada",
+    "11 Rue de la Comète, Gatineau, QC J9A 2Y3, Canada",
+    "25 Baie St, Gatineau, Canada",
+    "80 Bellehumeur St, Gatineau, Canada",
+    "200 Montcalm St, Gatineau, Canada",
+    "100 Gappe Blvd, Gatineau, Canada",
+    "350 Cité-des-Jeunes Blvd, Gatineau, Canada",
+    "150 Hôtel-de-Ville St, Gatineau, Canada",
+    "50 Bellehumeur St, Gatineau, Canada",
+    "75 Edmonton St, Gatineau, Canada",
+    "275 Cité-des-Jeunes Blvd, Gatineau, Canada",
+    "250 Cité-des-Jeunes Blvd, Gatineau, Canada",
+    "1 Plateau Blvd, Gatineau, Canada",
+    "75 Gappe Blvd, Gatineau, Canada",
+    "100 Hôpital Blvd, Gatineau, Canada",
+    "200 Gréber Blvd, Gatineau, Canada",
+    "125 Cité-des-Jeunes Blvd, Gatineau, Canada",
+    "50 Charlevoix St, Gatineau, Canada",
+    "200 Allumettières Blvd, Gatineau, Canada",
+    "150 Hôpital Blvd, Gatineau, Canada",
+    "300 Saint-Joseph Blvd, Gatineau, Canada",
+    "100 Georges-Bilodeau St, Gatineau, Canada",
+    "75 Georges-Bilodeau St, Gatineau, Canada",
+    "50 Georges-Bilodeau St, Gatineau, Canada",
+    "125 Georges-Bilodeau St, Gatineau, Canada",
+    "150 Georges-Bilodeau St, Gatineau, Canada",
+    "175 Georges-Bilodeau St, Gatineau, Canada",
+    "200 Georges-Bilodeau St, Gatineau, Canada",
+    "225 Georges-Bilodeau St, Gatineau, Canada",
+    "250 Georges-Bilodeau St, Gatineau, Canada",
+    "275 Georges-Bilodeau St, Gatineau, Canada",
+    "300 Georges-Bilodeau St, Gatineau, Canada",
+    "325 Georges-Bilodeau St, Gatineau, Canada",
+    "350 Georges-Bilodeau St, Gatineau, Canada"
 ]
 
 def get_random_address(index):
-    return ottawa_addresses[index]
+    return gatineau_addresses[index]
 
 potholes = []
-for i in range(9):
+for i in range(7):
     address = get_random_address(i)
     dangerous = random.choice([True, False])
     date = fake.date_time_between(start_date='-1y', end_date='now').strftime('%Y-%m-%d')
@@ -76,4 +66,8 @@ for i in range(9):
 results = schedule_potholes(potholes, [3*i for i in range(3)])
 
 
-print(results)
+for team in results.keys():
+    print(str(team))
+    for pothole in results[team].items():
+        print(pothole)
+    print("\n")
