@@ -38,7 +38,7 @@ def get_health():
 # Algo
 
 @app.route(V1+REQUESTS_ROUTE+"/distribute", methods=[PUT])
-def get_teams():
+def calculate_algo():
     return app.response_class(response=return_success_response(_requests.distribute_tasks(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
 
 # Teams

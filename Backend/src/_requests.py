@@ -62,12 +62,14 @@ def create_request(request):
         
     # Add requestor info
     if firstname and lastname and tel:
-        requestor_id = get_requestor_by_name_and_tel(firstname=firstname, lastname=lastname, tel=tel).get("id")
+        requestor = get_requestor_by_name_and_tel(firstname=firstname, lastname=lastname, tel=tel)
     else:
         abort(Response(return_error_response('ERR_GENERAL_E001', 'INVALID missinge firstname, lastname or tel'), HTTP_CODE_UNAUTHORIZED, content_type=MIME_TYPE_JSON))
 
-    if not requestor_id:
+    if not requestor:
         requestor_id = insert_requestor(firstname=firstname, lastname=lastname, tel=tel, email=email)
+    else:
+        requestor_id = requestor.get('id')
 
     if (request.method == "POST"):
         req_id = insert_request(
@@ -88,5 +90,5 @@ def delete_request(request):
 
 def distribute_tasks(requests):
     # [ids of teams]
-    
+
     pass
