@@ -18,10 +18,18 @@ const Team: React.FC<Props> = () => {
   );
   const [info, setInfo] = useState<TeamInfo>();
   useEffect(() => {
-    TeamLogInMutation.mutateAsync(teamId).then((data)=>{
-      setInfo(data.info)
-      setReports(data.requests)
-    }).catch(()=>{})
+    TeamLogInMutation.mutateAsync(teamId)
+      .then((data) => {
+        if (data.info.is_admin == 1) {
+          navigate("/admin", {
+            state: { id: teamId },
+          });
+        } else {
+          setInfo(data.info);
+          setReports(data.requests);
+        }
+      })
+      .catch(() => {});
   }, []);
   return (
     <div className="flex m-4 flex-col">

@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 const ViewReport:React.FC = () => {
     let location = useLocation();
     const [report, setReport] = useState<ReportObjectProps>(location.state.report);
+    console.log(report)
     return (
       <div className="flex">
         <div className="card w-96 bg-base-100 shadow-xl m-auto">

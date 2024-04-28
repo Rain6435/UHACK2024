@@ -10,6 +10,7 @@ export type ReportObjectProps = {
   initialStatus:string;
   image_path: string;
   requestor_id: number;
+  adresse:string;
 };
 
 export type TeamInfo = {
