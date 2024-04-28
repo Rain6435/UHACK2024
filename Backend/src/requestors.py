@@ -8,10 +8,13 @@ from utils.db import (
     get_all_requestor,
     get_requestor_by_name_and_address,
     get_requestor_by_tel,
-    get_requestor_by_name_and_tel
+    get_requestor_by_name_and_tel,
+    insert_requestor,
+    modify_requestor,
 )
 from utils.csv_util import get_voie_routier
 from utils.date import get_utc_now
+from utils.basic import format_tel, format_name
 
 def get_requestors(request):
     id = request.args.get("id", None)
@@ -24,10 +27,11 @@ def get_requestors(request):
 def login_requestor(request):
     body = request.json
 
-    firstname = body.get('userFname')
-    lastname = body.get('userLname')
-    adresse = body.get('adresse')
-    tel = body.get('telephone')
+    firstname = format_name(body.get('firstname'))
+    lastname = format_name(body.get('lastname'))
+    tel = format_tel(body.get('tel'))
+
+    print(firstname, lastname, tel)
 
     if tel and firstname and lastname:
         user = get_requestor_by_name_and_tel(firstname=firstname, lastname=lastname, tel=tel)
@@ -39,7 +43,20 @@ def login_requestor(request):
     return user
 
 def create_requestor(request):
-    return ""
+    body = request.json
+    firstname = body.get("firstname")
+    lastname = body.get("lastname")
+    tel = body.get("tel")
+    email = body.get("email")
+    adresse = body.get("adresse")
+
+    if request.method == "POST":
+        requestor_id = insert_requestor(firstname=firstname, lastname=lastname, tel=tel, email=email, adresse=adresse)
+    else:
+        requestor_id = modify_requestor(firstname=firstname, lastname=lastname, tel=tel, email=email, adresse=adresse)
+
+    return requestor_id
+
     
 def delete_requestor(request):
     return ""

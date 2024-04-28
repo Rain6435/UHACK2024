@@ -10,11 +10,13 @@ from utils.db import (
     get_requestor_by_email, 
     get_requestor_by_name_and_address, 
     get_requestor_by_tel, 
+    get_requestor_by_name_and_tel,
     insert_requestor,
     modify_request
 )
 from utils.csv_util import get_voie_routier
 from utils.date import get_utc_now
+from utils.basic import format_tel, format_name
 
 
 STATUS_PENDING = "PENDING"
@@ -35,9 +37,9 @@ def create_request(request):
     dangerous = body.get('dangerous')
     image = body.get('image')
     email = body.get('email')
-    firstname = body.get('userFname')
-    lastname = body.get('userLname')
-    tel = body.get('tel')
+    firstname = format_name(body.get('userFname'))
+    lastname = format_name(body.get('userLname'))
+    tel = format_tel(body.get('tel'))
     team_id = body.get('team_id')
     lead_time = body.get('lead_time')
     fix_date = body.get('fix_date')
@@ -59,12 +61,10 @@ def create_request(request):
         abort(Response(return_error_response("ERR_GENERAL_E001", "Invalid adresse"), HTTP_CODE_FORBIDDEN, content_type=MIME_TYPE_JSON))
         
     # Add requestor info
-    if tel:
-        user = get_requestor_by_tel(tel=tel)
-    elif firstname and lastname and adresse:
-        user = get_requestor_by_name_and_address(firstname=firstname, lastname=lastname, adresse=adresse)
+    if firstname and lastname and tel:
+        user = get_requestor_by_name_and_tel(firstname=firstname, lastname=lastname, tel=tel)
     else:
-        abort(Response(return_error_response('ERR_GENERAL_E001', 'INVALID'), HTTP_CODE_UNAUTHORIZED, content_type=MIME_TYPE_JSON))
+        abort(Response(return_error_response('ERR_GENERAL_E001', 'INVALID missinge firstname, lastname or tel'), HTTP_CODE_UNAUTHORIZED, content_type=MIME_TYPE_JSON))
 
     if not user:
         requestor_id = insert_requestor(firstname=firstname, lastname=lastname, tel=tel, email=email)

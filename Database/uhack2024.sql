@@ -112,7 +112,7 @@ ALTER TABLE `request`
 --
 ALTER TABLE `requestor`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UNIQUE_PERSON` (`firstname`,`lastname`,`adresse`);
+  ADD UNIQUE KEY `UNIQUE_PERSON` (`firstname`,`lastname`,`tel`);
 
 --
 -- Indexes for table `team`

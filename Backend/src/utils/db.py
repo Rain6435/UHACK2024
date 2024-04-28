@@ -264,3 +264,38 @@ def insert_requestor(firstname, lastname, email, tel, adresse=None,):
     
     return last_insert_id
 
+def modify_requestor(id, firstname=None, lastname=None, email=None, tel=None, adresse=None):
+    cursor = cnx.cursor()
+    
+    # Construct the SQL UPDATE statement
+    query = "UPDATE requestor SET "
+    values = []
+    
+    # Append each field to the UPDATE statement if its value is not None
+    if firstname is not None:
+        query += "firstname = %s, "
+        values.append(firstname)
+    if lastname is not None:
+        query += "lastname = %s, "
+        values.append(lastname)
+    if email is not None:
+        query += "email = %s, "
+        values.append(email)
+    if tel is not None:
+        query += "tel = %s, "
+        values.append(tel)
+    if adresse is not None:
+        query += "adresse = %s, "
+        values.append(adresse)
+    
+    # Remove the trailing comma and space
+    query = query.rstrip(', ')
+    query += " WHERE id = %s"
+    values.append(id)
+    
+    # Execute the SQL UPDATE statement
+    cursor.execute(query, values)
+    cnx.commit()
+    cursor.close()
+    
+    return id

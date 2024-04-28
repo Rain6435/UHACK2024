@@ -28,7 +28,7 @@ V1 = "/v1"
 LOGIN = "/login"
 HEALTH = "/health"
 TEAMS_ROUTE = "/teams"
-REQUESTORS_ROUTE = "/requestors"
+REQUESTORS_ROUTE = "/users"
 REQUESTS_ROUTE = "/requests"
 
 @app.route(V1 + HEALTH, methods=[GET])
@@ -63,7 +63,7 @@ def get_requestors():
 def post_requestors():
     return app.response_class(response=return_success_response(requestors.create_requestor(request)), status=HTTP_CODE_CREATED, mimetype=MIME_TYPE_JSON)
 
-@app.route(V1+LOGIN+ REQUESTORS_ROUTE, methods=[POST])
+@app.route(V1+REQUESTORS_ROUTE+ LOGIN, methods=[POST])
 def login_requestors():
     return app.response_class(response=return_success_response(requestors.login_requestor(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
 
