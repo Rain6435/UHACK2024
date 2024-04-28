@@ -8,7 +8,7 @@ def get_team_by_id(id):
     cursor.execute(f"SELECT id, name, password, work_time, work_season, secteur, is_admin FROM team WHERE id = {id}")
     team = cursor.fetchall()
     team = team[0] if len(team) > 0 else None
-    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request WHERE team_id = {team[0]}")
+    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, adresse, priority FROM request WHERE team_id = {team[0]}")
     reqs = cursor.fetchall()
 
     return {
@@ -31,7 +31,9 @@ def get_team_by_id(id):
             'fix_date': req[6],
             "status": req[7],
             "image": req[8],
-            "requestor_id": req[9],
+            "requestor_id": req[9], 
+            "adresse": req[10],
+            "priority": req[11]
         } for req in reqs]
     } if team else None
 
@@ -40,7 +42,7 @@ def get_all_teams():
     teams = cursor.fetchall()
     ret = []
     for team in teams:
-        cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request WHERE team_id = {team[0]}")
+        cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, adresse, priority FROM request WHERE team_id = {team[0]}")
         reqs = cursor.fetchall()
 
         ret.append({
@@ -63,14 +65,16 @@ def get_all_teams():
                 'fix_date': req[6],
                 "status": req[7],
                 "image": req[8],
-                "requestor_id": req[9],
+                "requestor_id": req[9], 
+                "adresse": req[10],
+                "priority": req[11]
             } for req in reqs]
         })
         
     return ret
 
 def get_request_id(id):
-    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, adresse FROM request WHERE id = {id}")
+    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, adresse, priority FROM request WHERE id = {id}")
     req = cursor.fetchall()
     req = req[0] if len(req) > 0 else None
 
@@ -85,11 +89,12 @@ def get_request_id(id):
         "status": req[7],
         "image": req[8],
         "requestor_id": req[9],
-        "adresse": req[10]
+        "adresse": req[10],
+        "priority": req[11],
     } if req else None
 
 def get_all_requests():
-    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, adresse FROM request")
+    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, adresse, priority FROM request")
     reqs = cursor.fetchall()
     return [{
         'id': req[0], 
@@ -103,6 +108,7 @@ def get_all_requests():
         "image": req[8],
         "requestor_id": req[9],
         "adresse": req[10],
+        "priority": req[11],
     } for req in reqs]
 
 def insert_request(location, is_dangerous, creation_date, adresse, status, image, requestor_id, team_id=None, lead_time=None, fix_date=None):
@@ -113,7 +119,7 @@ def insert_request(location, is_dangerous, creation_date, adresse, status, image
     
     return cursor.lastrowid
 
-def modify_request(id, location=None, is_dangerous=None, adresse=None, status=None, image=None, team_id=None, lead_time=None, fix_date=None):
+def modify_request(id, location=None, is_dangerous=None, adresse=None, status=None, image=None, team_id=None, lead_time=None, fix_date=None, priority=None):
     cursor = cnx.cursor()
     
     # Construct the SQL UPDATE statement
@@ -145,6 +151,9 @@ def modify_request(id, location=None, is_dangerous=None, adresse=None, status=No
     if fix_date is not None:
         query += "fix_date = %s, "
         values.append(fix_date)
+    if priority is not None:
+        query += "priority = %s, "
+        values.append(priority)
     
     # Remove the trailing comma and space
     query = query.rstrip(', ')
@@ -174,7 +183,7 @@ def get_all_requestor():
         }
         
         # Query requests associated with the user
-        cursor.execute(f"SELECT id, location, adresse, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request WHERE requestor_id = '{user[0]}'")
+        cursor.execute(f"SELECT id, location, adresse, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, priority FROM request WHERE requestor_id = '{user[0]}'")
         requests = cursor.fetchall()
         
         # Construct list of request information
@@ -191,7 +200,8 @@ def get_all_requestor():
                 'fix_date': req[7],
                 'status': req[8],
                 'image': req[9],
-                'requestor_id': req[10]
+                'requestor_id': req[10],
+                'priority': req[11],
             }
             user_requests.append(req_info)
         
@@ -220,7 +230,7 @@ def get_requestor_by_id(id):
             'tel': user[5]
         }
         
-        cursor.execute(f"SELECT id, location, adresse, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request WHERE requestor_id = '{id}'")
+        cursor.execute(f"SELECT id, location, adresse, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, priority FROM request WHERE requestor_id = '{id}'")
         requests = cursor.fetchall()
         
         user_requests = []
@@ -236,7 +246,8 @@ def get_requestor_by_id(id):
                 'fix_date': req[7],
                 'status': req[8],
                 'image': req[9],
-                'requestor_id': req[10]
+                'requestor_id': req[10],
+                'priority': req[10]
             }
             user_requests.append(req_info)
 

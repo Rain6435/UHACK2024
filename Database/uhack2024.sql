@@ -42,7 +42,8 @@ CREATE TABLE `request` (
   `fix_date` date DEFAULT NULL,
   `status` varchar(45) NOT NULL,
   `image` text DEFAULT NULL,
-  `requestor_id` int(10) NOT NULL
+  `requestor_id` int(10) NOT NULL,
+  `priority` int(10)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

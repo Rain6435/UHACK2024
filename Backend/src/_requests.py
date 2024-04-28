@@ -17,7 +17,7 @@ from utils.db import (
 from utils.csv_util import get_voie_routier
 from utils.date import get_utc_now
 from utils.basic import format_tel, format_name
-
+from utils.algo import algo
 
 STATUS_PENDING = "PENDING"
 
@@ -85,3 +85,8 @@ def create_request(request):
     
 def delete_request(request):
     return ""
+
+def distribute_tasks(requests):
+    # [ids of teams]
+    
+    pass
