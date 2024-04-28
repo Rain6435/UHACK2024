@@ -112,12 +112,14 @@ def get_all_requests():
     } for req in reqs]
 
 def insert_request(location, is_dangerous, creation_date, adresse, status, image, requestor_id, team_id=None, lead_time=None, fix_date=None):
-    cursor = cnx.cursor()
-    cursor.execute(f"INSERT INTO request (location, team_id, is_dangerous, creation_date, adresse, lead_time, fix_date, status, image, requestor_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (location, team_id, is_dangerous, creation_date, adresse, lead_time, fix_date, status, image, requestor_id))
-    cnx.commit()
-    cursor.close()
-    
-    return cursor.lastrowid
+    try:
+        cursor = cnx.cursor()
+        cursor.execute(f"INSERT INTO request (location, team_id, is_dangerous, creation_date, adresse, lead_time, fix_date, status, image, requestor_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (location, team_id, is_dangerous, creation_date, adresse, lead_time, fix_date, status, image, requestor_id))
+        cnx.commit()
+        cursor.close()
+        return cursor.lastrowid
+    except mysql.connector.errors.IntegrityError:
+        return None
 
 def modify_request(id, location=None, is_dangerous=None, adresse=None, status=None, image=None, team_id=None, lead_time=None, fix_date=None, priority=None):
     cursor = cnx.cursor()

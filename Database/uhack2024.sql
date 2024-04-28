@@ -105,6 +105,7 @@ INSERT INTO `team` (`id`, `name`, `password`, `work_time`, `work_season`, `secte
 --
 ALTER TABLE `request`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQUE_request` (`adresse`,`requestor_id`),
   ADD KEY `foreign_key_team_teamID` (`team_id`),
   ADD KEY `foreign_key_requestor_requestorID` (`requestor_id`);
 

@@ -81,6 +81,9 @@ def create_request(request):
             image=image, 
             requestor_id=requestor_id
         )
+
+        if not req_id:
+            abort(Response(return_error_response('ERR_GENERAL_E001', 'NO DUPLICATES'), HTTP_CODE_UNAUTHORIZED, content_type=MIME_TYPE_JSON))
     
     return req_id
 
