@@ -1,0 +1,3 @@
+
+def algo():
+    pass
