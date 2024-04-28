@@ -1,5 +1,6 @@
-from geopy.geocoders import Nominatim
+# from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
+from geopy.geocoders import GoogleV3
 from dijkistra import dijkistra_magic
 from datetime import datetime
 
@@ -176,7 +177,6 @@ def format_output(team_assignments, team_ids):
     Returns a dictionnary that stores the potholes under each team's ID and
     maps the pothole in the dictionary to its priority index
     '''
-    print(team_assignments)
     output = {}
 
     for i, team_id in enumerate(team_ids):
@@ -210,9 +210,8 @@ def calculate_distance(pothole1, pothole2, use_age=False):
     address1 = pothole1["address"]
     address2 = pothole2["address"]
 
-    print(address1, address2)
-
-    geolocator = Nominatim(user_agent="Potholes", timeout=3)
+    #geolocator = Nominatim(user_agent="Potholes", timeout=3)
+    geolocator = GoogleV3(api_key="AIzaSyCE8Sq8qfsnvt2ykcML226K68-naKCWNcw",user_agent="Potholes", timeout=4)
 
     location1 = geolocator.geocode(address1)
     location2 = geolocator.geocode(address2)
