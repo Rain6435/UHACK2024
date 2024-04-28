@@ -110,7 +110,7 @@ const Report: React.FC<Props> = () => {
             <label>
               <p className="m-auto">Adresse du nid-de-poule</p>
               <Autocomplete
-                apiKey="AIzaSyCE8Sq8qfsnvt2ykcML226K68-naKCWNcw"
+                apiKey=""
                 onPlaceSelected={(place) => {
                   setAddress(place);
                 }}

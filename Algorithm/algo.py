@@ -211,7 +211,7 @@ def calculate_distance(pothole1, pothole2, use_age=False):
     address2 = pothole2["address"]
 
     #geolocator = Nominatim(user_agent="Potholes", timeout=3)
-    geolocator = GoogleV3(api_key="AIzaSyCE8Sq8qfsnvt2ykcML226K68-naKCWNcw",user_agent="Potholes", timeout=4)
+    geolocator = GoogleV3(api_key="",user_agent="Potholes", timeout=4)
 
     location1 = geolocator.geocode(address1)
     location2 = geolocator.geocode(address2)
