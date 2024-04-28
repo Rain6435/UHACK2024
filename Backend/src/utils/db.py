@@ -10,6 +10,7 @@ def get_team_by_id(id):
     team = team[0] if len(team) > 0 else None
     cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request WHERE team_id = {team[0]}")
     reqs = cursor.fetchall()
+
     return {
         'info': {
             'id': team[0],
@@ -69,7 +70,7 @@ def get_all_teams():
     return ret
 
 def get_request_id(id):
-    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request WHERE id = {id}")
+    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, adresse FROM request WHERE id = {id}")
     req = cursor.fetchall()
     req = req[0] if len(req) > 0 else None
 
@@ -84,10 +85,11 @@ def get_request_id(id):
         "status": req[7],
         "image": req[8],
         "requestor_id": req[9],
+        "adresse": req[10]
     } if req else None
 
 def get_all_requests():
-    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request")
+    cursor.execute(f"SELECT id, location, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id, adresse FROM request")
     reqs = cursor.fetchall()
     return [{
         'id': req[0], 
@@ -100,6 +102,7 @@ def get_all_requests():
         "status": req[7],
         "image": req[8],
         "requestor_id": req[9],
+        "adresse": req[10],
     } for req in reqs]
 
 def insert_request(location, is_dangerous, creation_date, adresse, status, image, requestor_id, team_id=None, lead_time=None, fix_date=None):
@@ -153,6 +156,41 @@ def modify_request(id, location=None, is_dangerous=None, adresse=None, status=No
     
     return id
 
+def get_all_requestor():
+    cursor = cnx.cursor()
+    cursor.execute("SELECT id, firstname, lastname, adresse, email, tel FROM requestor")
+    users = cursor.fetchall()
+    cursor.close()
+    
+    requestors = []
+    for user in users:
+        requestors.append({
+            'id': user[0], 
+            'firstname': user[1], 
+            'lastname': user[2], 
+            'adresse': user[3],
+            'email': user[4],
+            'tel': user[5]
+        })
+    
+    return requestors
+
+def get_requestor_by_id(id):
+    cursor = cnx.cursor()
+    cursor.execute(f"SELECT id, firstname, lastname, adresse, email, tel FROM requestor WHERE id = '{id}'")
+    user = cursor.fetchall()
+    user = user[0] if len(user) > 0 else None
+    cursor.close()
+    
+    return {
+        'id': user[0], 
+        'firstname': user[1], 
+        'lastname': user[2], 
+        'adresse': user[3],
+        'email': user[4],
+        'tel': user[5]
+    } if user else None
+
 def get_requestor_by_tel(tel):
     cursor = cnx.cursor()
     cursor.execute(f"SELECT id, firstname, lastname, adresse, email, tel FROM requestor WHERE tel = '{tel}'")
@@ -172,6 +210,22 @@ def get_requestor_by_tel(tel):
 def get_requestor_by_name_and_address(firstname, lastname, adresse):
     cursor = cnx.cursor()
     cursor.execute(f"SELECT id, firstname, lastname, adresse, email, tel FROM requestor WHERE firstname = '{firstname}' AND lastname = '{lastname}' AND adresse = '{adresse}'")
+    user = cursor.fetchall()
+    user = user[0] if len(user) > 0 else None
+    cursor.close()
+    
+    return {
+        'id': user[0], 
+        'firstname': user[1], 
+        'lastname': user[2], 
+        'adresse': user[3],
+        'email': user[4],
+        'tel': user[5]
+    } if user else None
+
+def get_requestor_by_name_and_tel(firstname, lastname, tel):
+    cursor = cnx.cursor()
+    cursor.execute(f"SELECT id, firstname, lastname, adresse, email, tel FROM requestor WHERE firstname = '{firstname}' AND lastname = '{lastname}' AND tel = '{tel}'")
     user = cursor.fetchall()
     user = user[0] if len(user) > 0 else None
     cursor.close()

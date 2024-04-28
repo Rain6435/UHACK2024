@@ -50,7 +50,7 @@ def create_request(request):
 
     route = [a['long_name'] for a in adresse_component if a.get('types')[0] == 'route'][0]
     
-    print("asdasd", route)
+    print("route", route)
 
     # Find location_id
     df = get_voie_routier()
@@ -63,8 +63,6 @@ def create_request(request):
         user = get_requestor_by_tel(tel=tel)
     elif firstname and lastname and adresse:
         user = get_requestor_by_name_and_address(firstname=firstname, lastname=lastname, adresse=adresse)
-    elif email:
-        user = get_requestor_by_email(email=email)
     else:
         abort(Response(return_error_response('ERR_GENERAL_E001', 'INVALID'), HTTP_CODE_UNAUTHORIZED, content_type=MIME_TYPE_JSON))
 
