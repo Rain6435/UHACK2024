@@ -37,7 +37,7 @@ def create_request(request):
     email = body.get('email')
     firstname = body.get('userFname')
     lastname = body.get('userLname')
-    tel = body.get('telephone')
+    tel = body.get('tel')
     team_id = body.get('team_id')
     lead_time = body.get('lead_time')
     fix_date = body.get('fix_date')

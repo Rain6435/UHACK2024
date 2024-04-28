@@ -30,11 +30,13 @@ def login_requestor(request):
     tel = body.get('telephone')
 
     if tel and firstname and lastname:
-        user = get_requestor_by_name_and_tel(firstname=firstname, lastname=lastname, adresse=adresse, tel=tel)
+        user = get_requestor_by_name_and_tel(firstname=firstname, lastname=lastname, tel=tel)
     else:
         abort(Response(return_error_response('ERR_GENERAL_E001', 'INVALID'), HTTP_CODE_UNAUTHORIZED, content_type=MIME_TYPE_JSON))
+    if not user:
+        abort(Response(return_error_response('ERR_GENERAL_E001', 'INVALID'), HTTP_CODE_UNAUTHORIZED, content_type=MIME_TYPE_JSON))
 
-
+    return user
 
 def create_requestor(request):
     return ""
