@@ -1,62 +1,542 @@
 [
     {
         "address": "230 Bd Saint-Joseph, Gatineau, QC J8Y 3X4, Canada",
-        "is_dangerous": true,
-        "date": "2023-07-24",
-        "segment": "Allée"
+        "is_dangerous": false,
+        "date": "2024-02-26",
+        "segment": "Promenade"
     },
     {
         "address": "92 Rue Labelle, Gatineau, QC J8Y, Canada",
-        "is_dangerous": true,
-        "date": "2024-01-26",
-        "segment": "Rue"
+        "is_dangerous": false,
+        "date": "2023-10-20",
+        "segment": "Chemin"
     },
     {
         "address": "Prom. de la Gatineau, Chelsea, QC, Canada",
         "is_dangerous": true,
-        "date": "2023-07-02",
-        "segment": "Croissant"
+        "date": "2023-06-13",
+        "segment": "Chemin"
     },
     {
         "address": "77 Rue Sherbrooke, Gatineau, QC J8Y 2K8, Canada",
         "is_dangerous": true,
-        "date": "2023-09-20",
-        "segment": "Avenue"
+        "date": "2024-04-12",
+        "segment": "Route"
     },
     {
         "address": "788 Bd la Vérendrye O, Gatineau, QC J8R 4A8, Canada",
         "is_dangerous": true,
-        "date": "2023-09-01",
-        "segment": "Rue"
+        "date": "2023-08-18",
+        "segment": "Corridor"
     },
     {
         "address": "230 Rue Saint-Louis, Gatineau, QC J8P 8B3, Canada",
         "is_dangerous": true,
-        "date": "2023-10-11",
-        "segment": "Rue"
+        "date": "2023-05-19",
+        "segment": "Impasse"
     },
     {
         "address": "11 Rue de la Comète, Gatineau, QC J9A 2Y3, Canada",
-        "is_dangerous": true,
-        "date": "2023-09-03",
-        "segment": "Place"
+        "is_dangerous": false,
+        "date": "2023-10-14",
+        "segment": "Autoroute"
     },
     {
-        "address": "611 Boulevard Saint-Joseph, Gatineau, Quebec J8Y 4A6",
+        "address": "25 Baie St, Gatineau, Canada",
         "is_dangerous": true,
-        "date": "2023-12-30",
+        "date": "2023-11-23",
+        "segment": "Ruelle"
+    },
+    {
+        "address": "80 Bellehumeur St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-05-31",
+        "segment": "Montée"
+    },
+    {
+        "address": "200 Montcalm St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-10-12",
+        "segment": "Avenue"
+    },
+    {
+        "address": "100 Gappe Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-05-21",
         "segment": "Allée"
     },
     {
-        "address": "78 Bd Gréber, Gatineau, QC J8T 3P8",
+        "address": "350 Cité-des-Jeunes Blvd, Gatineau, Canada",
         "is_dangerous": true,
-        "date": "2023-07-10",
+        "date": "2023-11-24",
         "segment": "Route"
     },
     {
-        "address": "60 Bd Saint-Raymond, Gatineau, QC J8Y 1S1",
+        "address": "150 Hôtel-de-Ville St, Gatineau, Canada",
         "is_dangerous": false,
-        "date": "2023-07-05",
+        "date": "2023-05-12",
+        "segment": "Impasse"
+    },
+    {
+        "address": "50 Bellehumeur St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-03-28",
+        "segment": "Ruelle"
+    },
+    {
+        "address": "75 Edmonton St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-02-26",
+        "segment": "Route"
+    },
+    {
+        "address": "275 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-09-03",
+        "segment": "Allée"
+    },
+    {
+        "address": "250 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-03-17",
+        "segment": "Impasse"
+    },
+    {
+        "address": "1 Plateau Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-08-07",
+        "segment": "Impasse"
+    },
+    {
+        "address": "75 Gappe Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-11-27",
+        "segment": "Ruelle"
+    },
+    {
+        "address": "100 Hôpital Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-03-04",
+        "segment": "Place"
+    },
+    {
+        "address": "200 Gréber Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-01-30",
+        "segment": "Promenade"
+    },
+    {
+        "address": "125 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-11-09",
+        "segment": "Allée"
+    },
+    {
+        "address": "50 Charlevoix St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-02-20",
+        "segment": "Route"
+    },
+    {
+        "address": "200 Allumettières Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-11-15",
+        "segment": "Promenade"
+    },
+    {
+        "address": "150 Hôpital Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-06-30",
+        "segment": "Croissant"
+    },
+    {
+        "address": "300 Saint-Joseph Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-11-04",
+        "segment": "Place"
+    },
+    {
+        "address": "100 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-12-13",
+        "segment": "Autoroute"
+    },
+    {
+        "address": "75 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-07-29",
+        "segment": "Route"
+    },
+    {
+        "address": "50 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-06-25",
+        "segment": "Promenade"
+    },
+    {
+        "address": "125 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-03-06",
+        "segment": "Rue"
+    },
+    {
+        "address": "150 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-12-16",
+        "segment": "Allée"
+    },
+    {
+        "address": "175 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-02-12",
+        "segment": "Rue"
+    },
+    {
+        "address": "200 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-09-26",
+        "segment": "Corridor"
+    },
+    {
+        "address": "225 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-03-21",
+        "segment": "Avenue"
+    },
+    {
+        "address": "250 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-02-22",
+        "segment": "Route"
+    },
+    {
+        "address": "275 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-06-04",
+        "segment": "Place"
+    },
+    {
+        "address": "300 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-10-02",
+        "segment": "Montée"
+    },
+    {
+        "address": "325 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-04-04",
+        "segment": "Montée"
+    },
+    {
+        "address": "350 Georges-Bilodeau St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-03-24",
+        "segment": "Allée"
+    },
+    {
+        "address": "1 Rue de la Comète, Gatineau, QC J9A 2Y3, Canada",
+        "is_dangerous": false,
+        "date": "2023-10-10",
+        "segment": "Ruelle"
+    },
+    {
+        "address": "2 Rue de la Comète, Gatineau, QC J9A 2Y3, Canada",
+        "is_dangerous": false,
+        "date": "2023-11-13",
+        "segment": "Route"
+    },
+    {
+        "address": "3 Rue de la Comète, Gatineau, QC J9A 2Y3, Canada",
+        "is_dangerous": true,
+        "date": "2023-10-12",
         "segment": "Chemin"
+    },
+    {
+        "address": "1 Baie St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-09-10",
+        "segment": "Chemin"
+    },
+    {
+        "address": "2 Baie St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-08-23",
+        "segment": "Impasse"
+    },
+    {
+        "address": "3 Baie St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-04-12",
+        "segment": "Place"
+    },
+    {
+        "address": "1 Bellehumeur St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-02-22",
+        "segment": "Route"
+    },
+    {
+        "address": "2 Bellehumeur St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-07-14",
+        "segment": "Chemin"
+    },
+    {
+        "address": "3 Bellehumeur St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-06-22",
+        "segment": "Impasse"
+    },
+    {
+        "address": "1 Montcalm St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-07-02",
+        "segment": "Croissant"
+    },
+    {
+        "address": "2 Montcalm St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-11-22",
+        "segment": "Autoroute"
+    },
+    {
+        "address": "3 Montcalm St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-09-30",
+        "segment": "Boulevard"
+    },
+    {
+        "address": "1 Gappe Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-08-12",
+        "segment": "Avenue"
+    },
+    {
+        "address": "2 Gappe Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-01-20",
+        "segment": "Promenade"
+    },
+    {
+        "address": "3 Gappe Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-11-08",
+        "segment": "Rue"
+    },
+    {
+        "address": "1 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-10-06",
+        "segment": "Impasse"
+    },
+    {
+        "address": "2 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-10-04",
+        "segment": "Route"
+    },
+    {
+        "address": "3 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-10-05",
+        "segment": "Autoroute"
+    },
+    {
+        "address": "1 Hôtel-de-Ville St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-05-25",
+        "segment": "Impasse"
+    },
+    {
+        "address": "2 Hôtel-de-Ville St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-08-23",
+        "segment": "Promenade"
+    },
+    {
+        "address": "3 Hôtel-de-Ville St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-10-07",
+        "segment": "Allée"
+    },
+    {
+        "address": "1 Bellehumeur St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-08-11",
+        "segment": "Autoroute"
+    },
+    {
+        "address": "2 Bellehumeur St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-06-30",
+        "segment": "Promenade"
+    },
+    {
+        "address": "3 Bellehumeur St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-08-12",
+        "segment": "Place"
+    },
+    {
+        "address": "1 Edmonton St, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-10-14",
+        "segment": "Rue"
+    },
+    {
+        "address": "2 Edmonton St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-02-01",
+        "segment": "Promenade"
+    },
+    {
+        "address": "3 Edmonton St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-05-05",
+        "segment": "Corridor"
+    },
+    {
+        "address": "1 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-06-10",
+        "segment": "Avenue"
+    },
+    {
+        "address": "2 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-02-15",
+        "segment": "Avenue"
+    },
+    {
+        "address": "3 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-04-03",
+        "segment": "Avenue"
+    },
+    {
+        "address": "1 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-09-15",
+        "segment": "Boulevard"
+    },
+    {
+        "address": "2 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-11-13",
+        "segment": "Avenue"
+    },
+    {
+        "address": "3 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-03-09",
+        "segment": "Promenade"
+    },
+    {
+        "address": "1 Plateau Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-02-26",
+        "segment": "Route"
+    },
+    {
+        "address": "2 Plateau Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-04-13",
+        "segment": "Avenue"
+    },
+    {
+        "address": "3 Plateau Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-05-29",
+        "segment": "Ruelle"
+    },
+    {
+        "address": "1 Gappe Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-02-03",
+        "segment": "Chemin"
+    },
+    {
+        "address": "2 Gappe Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-12-25",
+        "segment": "Montée"
+    },
+    {
+        "address": "3 Gappe Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-06-02",
+        "segment": "Croissant"
+    },
+    {
+        "address": "1 Hôpital Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-04-03",
+        "segment": "Boulevard"
+    },
+    {
+        "address": "2 Hôpital Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-09-08",
+        "segment": "Route"
+    },
+    {
+        "address": "3 Hôpital Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2023-09-17",
+        "segment": "Avenue"
+    },
+    {
+        "address": "1 Gréber Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-09-28",
+        "segment": "Montée"
+    },
+    {
+        "address": "2 Gréber Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-02-16",
+        "segment": "Rue"
+    },
+    {
+        "address": "3 Gréber Blvd, Gatineau, Canada",
+        "is_dangerous": true,
+        "date": "2024-04-13",
+        "segment": "Promenade"
+    },
+    {
+        "address": "1 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-01-06",
+        "segment": "Chemin"
+    },
+    {
+        "address": "2 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-08-17",
+        "segment": "Impasse"
+    },
+    {
+        "address": "3 Cité-des-Jeunes Blvd, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2024-01-29",
+        "segment": "Ruelle"
+    },
+    {
+        "address": "1 Charlevoix St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-07-07",
+        "segment": "Corridor"
+    },
+    {
+        "address": "2 Charlevoix St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-08-25",
+        "segment": "Rue"
+    },
+    {
+        "address": "3 Charlevoix St, Gatineau, Canada",
+        "is_dangerous": false,
+        "date": "2023-11-21",
+        "segment": "Promenade"
     }
 ]
