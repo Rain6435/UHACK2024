@@ -48,10 +48,10 @@ const CitoyenView: React.FC = () => {
       <div className="my-4 flex flex-col">
         <h1 className="text-3xl font-bold m-auto text-left">Signalements</h1>
         <div className="flex">
-          <ul className="h-[700px] overflow-scroll m-auto rounded-xl">
+          <ul className="h-[700px] overflow-scroll overflow-x-hidden m-auto rounded-xl">
             {reports.map((report: ReportObjectProps, index: number) => (
-              <li key={index}>
-                <div className="card w-96 bg-base-100 my-2">
+              <li key={index} className="">
+                <div className="card w-96 bg-blue-50 m-4">
                   <div className="card-body ">
                     <h2 className="card-title text-m font-bold">
                       {report.adresse}

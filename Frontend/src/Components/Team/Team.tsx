@@ -56,11 +56,12 @@ const Team: React.FC<Props> = () => {
         </h1>
       </div>
 
-      <ul className="flex flex-col gap-4">
+      <ul className="flex flex-col gap-4 h-[500px] overflow-scroll">
         {reports.map((report: ReportObjectProps, index: number) => (
           <Row index={index} report={report}></Row>
         ))}
       </ul>
+      <button className="btn">Voir itinéraire</button>
     </div>
   );
 };

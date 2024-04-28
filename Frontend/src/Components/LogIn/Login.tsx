@@ -23,7 +23,8 @@ const Login: React.FC<Props> = () => {
     await TeamLogInMutation.mutateAsync(teamId)
       .then((data) => {
         setButtonState("success");
-        localStorage.setItem("logged","employe,"+{teamId})
+        console.log(teamId)
+        localStorage.setItem("logged","employe,"+teamId)
         setTimeout(() => {
           navigate("/team", {
             state: { id: teamId },
@@ -52,6 +53,7 @@ const Login: React.FC<Props> = () => {
       });
     }
     if (localStorage.getItem("logged")?.split(",")[0] == "employe") {
+      console.log(localStorage.getItem("logged")?.split(",")[1]);
       navigate("/team", {
         state: { id: localStorage.getItem("logged")?.split(",")[1] },
       });

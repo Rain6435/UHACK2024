@@ -77,6 +77,7 @@ export async function CitoyenReports(id: number) {
 }
 export async function TeamLogIn(teamId: string) {
   try {
+    console.log(teamId);
     // Send a POST request to the login endpoint of the API with the provided email and password
     const response: AxiosResponse<any> = await axios.get(API("v1/teams"), {
       params: {
