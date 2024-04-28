@@ -61,7 +61,7 @@ def get_random_address(index):
     return ottawa_addresses[index]
 
 potholes = []
-for i in range(10):
+for i in range(9):
     address = get_random_address(i)
     dangerous = random.choice([True, False])
     date = fake.date_time_between(start_date='-1y', end_date='now').strftime('%Y-%m-%d')
@@ -73,12 +73,7 @@ for i in range(10):
         'segment': segment
     })
 
-results = schedule_potholes(potholes, [0 for _ in range(3)])
+results = schedule_potholes(potholes, [3*i for i in range(3)])
 
-# Print the test data
-for i in range(len(results)):
-    team = results[i]
-    print("team " + str(i))
-    for pothole in team:
-        print(pothole)
-    print("\n")
+
+print(results)

@@ -51,7 +51,7 @@ def schedule_potholes(potholes, teams):
 
     team_assignments = assign_potholes(chain_of_potholes, len(teams), max_work_time)
 
-    return team_assignments
+    return format_output(team_assignments, teams)
 
 
 def organize_potholes(potholes):
@@ -120,41 +120,6 @@ def organize_potholes(potholes):
     return sorted_potholes
 
 
-def calculate_distance(pothole1, pothole2, use_age=False):
-    '''
-    Get distance between two potholes, from pothole1 to pothole2
-    The age is used by artificially decreasing the distance the older
-    pothole 2 is. This makes this route more attractive
-    '''
-    address1 = pothole1["address"]
-    address2 = pothole2["address"]
-
-    print(address1, address2)
-    geolocator = Nominatim(user_agent="Potholes", timeout=3)
-
-    location1 = geolocator.geocode(address1)
-    location2 = geolocator.geocode(address2)
-
-    coords1 = (location1.latitude, location1.longitude)
-    coords2 = (location2.latitude, location2.longitude)
-
-    # in this context, a day old reduces the weight by 1 km
-    # This parameter can be modified to give it a different weight
-    if use_age:
-        geodesic(coords1, coords2).kilometers - date_to_number
-    else:
-        return geodesic(coords1, coords2).kilometers
-
-
-def date_to_number(pothole, format='%Y-%m-%d', reference_date=datetime.now()):
-    '''
-    Return a numerical value given an SQL data object 
-    '''
-    date_object = datetime.strptime(pothole["date"], format)
-    delta = reference_date - date_object
-    return delta.days
-
-
 def assign_potholes(chain_of_potholes, nb_of_teams, max_work_time):
     '''
     Separate the potholes into each time while repescting a normal work day
@@ -165,7 +130,7 @@ def assign_potholes(chain_of_potholes, nb_of_teams, max_work_time):
     '''
     # Assuming an average moving speed of 45km/h, and a pothole repair to last 15 minutes
     speed = 45
-    repair_time = 100
+    repair_time = 15
 
     # initialize each team as having no work
     teams_workload = [[0, []] for x in range(nb_of_teams)]
@@ -204,4 +169,61 @@ def assign_potholes(chain_of_potholes, nb_of_teams, max_work_time):
     
     # Return only the list of potholes the teams will work on
     return [team[1] for team in teams_workload]
+
+
+def format_output(team_assignments, team_ids):
+    '''
+    Returns a dictionnary that stores the potholes under each team's ID and
+    maps the pothole in the dictionary to its priority index
+    '''
+    print(team_assignments)
+    output = {}
+
+    for i, team_id in enumerate(team_ids):
+        # Format the potholes to be mapped to their priority index
+        curr_pothole_dict = {}
+
+        for ind, pothole in enumerate(team_assignments[i]):
+            curr_pothole_dict[ind] = pothole
+
+        # else, the team has no potholes assigned to it
+
+        output[team_id] = curr_pothole_dict
+
+    return output
+
+
+def date_to_number(pothole, format='%Y-%m-%d', reference_date=datetime.now()):
+    '''
+    Return a numerical value given an SQL data object 
+    '''
+    date_object = datetime.strptime(pothole["date"], format)
+    delta = reference_date - date_object
+    return delta.days
+
+def calculate_distance(pothole1, pothole2, use_age=False):
+    '''
+    Get distance between two potholes, from pothole1 to pothole2
+    The age is used by artificially decreasing the distance the older
+    pothole 2 is. This makes this route more attractive
+    '''
+    address1 = pothole1["address"]
+    address2 = pothole2["address"]
+
+    print(address1, address2)
+
+    geolocator = Nominatim(user_agent="Potholes", timeout=3)
+
+    location1 = geolocator.geocode(address1)
+    location2 = geolocator.geocode(address2)
+
+    coords1 = (location1.latitude, location1.longitude)
+    coords2 = (location2.latitude, location2.longitude)
+
+    # in this context, a day old reduces the weight by 1 km
+    # This parameter can be modified to give it a different weight
+    if use_age:
+        geodesic(coords1, coords2).kilometers - date_to_number
+    else:
+        return geodesic(coords1, coords2).kilometers
 
