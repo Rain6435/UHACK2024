@@ -17,6 +17,7 @@ const Report: React.FC<Props> = () => {
   const [dangerous, setDangerous] = useState(false);
   const [image, setImage] = useState<string>("");
   const [email,setEmail] = useState<string>("");
+  const [tel, setTel] = useState<string>("");
 
   const [buttonState, setButtonState] = useState("default");
 
@@ -51,7 +52,8 @@ const Report: React.FC<Props> = () => {
       potholeAddress: address,
       dangerous: dangerous,
       image: image,
-      email:email
+      email:email,
+      tel:tel
     })
       .then((reportId) => {
         setButtonState("success");
@@ -78,10 +80,7 @@ const Report: React.FC<Props> = () => {
   }
 
   return (
-    <div className="m-auto card flex p-4">
-      <p className="my-4 text-3xl mx-4 font-bold">
-        Bienvenue à la ville de Gatineau
-      </p>
+    <div className="m-auto card flex px-4">
       <p className="my-4 text-xl mx-4 font-bold">Signaler un nid-de-poule</p>
       <div className="card w-full m-auto bg-base-100 shadow-xl">
         <div className="card-body w-full">
@@ -135,6 +134,16 @@ const Report: React.FC<Props> = () => {
                 placeholder="Ajouter votre courriel"
               />
             </label>
+            <label>
+              <input
+                className="input input-bordered ml-auto w-full"
+                type="tel"
+                value={tel}
+                onChange={(e) => setTel(e.target.value)}
+                autoComplete="off"
+                placeholder="Ajouter votre telephone"
+              />
+            </label>
             <label className="flex">
               <p className="m-auto">
                 <b>Dangeureux?</b>
@@ -150,7 +159,8 @@ const Report: React.FC<Props> = () => {
               <input
                 type="file"
                 className="file-input file-input-bordered w-full max-w-xs"
-                accept="image/png, image/jpeg"
+                accept="image/*"
+                capture="environment"
                 onChange={handleUpload}
               />
             </label>
@@ -181,7 +191,7 @@ const Report: React.FC<Props> = () => {
       <BaseDialog
         componentName="createFail"
         title="Il a y un ick!"
-        message="Malheureusement, nous n'avons pas pu traiter votre demande. Veuillez réessayer ultérieurment."
+        message="Malheureusement, nous n'avons pas pu traiter votre demande. Il existe déjà un signalement avec les coordonnées insérées."
       ></BaseDialog>
       <BaseDialog
         componentName="ServerFail"

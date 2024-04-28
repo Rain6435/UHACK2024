@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TeamLogIn } from "../../Tools/AuthUtils";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ const Login: React.FC<Props> = () => {
   const [teamId, setTeamId] = useState<string>("");
   const navigate = useNavigate();
   const [buttonState, setButtonState] = useState("default");
-  const TeamLogInMutation = useMutation((credentials:string) =>
+  const TeamLogInMutation = useMutation((credentials: string) =>
     TeamLogIn(credentials)
   );
 
@@ -22,11 +22,11 @@ const Login: React.FC<Props> = () => {
     setButtonState("reqSent");
     await TeamLogInMutation.mutateAsync(teamId)
       .then((data) => {
-        console.log(data)
         setButtonState("success");
+        localStorage.setItem("logged","employe,"+{teamId})
         setTimeout(() => {
           navigate("/team", {
-            state: { id:teamId },
+            state: { id: teamId },
           });
         }, 1000);
       })
@@ -44,6 +44,19 @@ const Login: React.FC<Props> = () => {
         }
       });
   }
+
+  useEffect(()=>{
+    if (localStorage.getItem("logged")?.split(",")[0] == "citoyen") {
+      navigate("/user", {
+        state: { id: localStorage.getItem("logged")?.split(",")[1] },
+      });
+    }
+    if (localStorage.getItem("logged")?.split(",")[0] == "employe") {
+      navigate("/team", {
+        state: { id: localStorage.getItem("logged")?.split(",")[1] },
+      });
+    }
+  })
 
   return (
     <div className="card flex flex-col w-96 mt-2 mb-10 m-auto h-1/2">

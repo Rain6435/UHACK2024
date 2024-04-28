@@ -23,6 +23,7 @@ const TrackReportComponent: React.FC<Props> = () => {
     await TrackReportMutation.mutateAsync(reportId)
       .then((report) => {
         setButtonState("success");
+        console.log(report)
         setTimeout(() => {
           navigate("/report", {
             state: { report: report },
