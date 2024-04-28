@@ -160,36 +160,92 @@ def get_all_requestor():
     cursor = cnx.cursor()
     cursor.execute("SELECT id, firstname, lastname, adresse, email, tel FROM requestor")
     users = cursor.fetchall()
-    cursor.close()
     
     requestors = []
     for user in users:
-        requestors.append({
+        # Extract user information
+        user_info = {
             'id': user[0], 
             'firstname': user[1], 
             'lastname': user[2], 
             'adresse': user[3],
             'email': user[4],
             'tel': user[5]
-        })
+        }
+        
+        # Query requests associated with the user
+        cursor.execute(f"SELECT id, location, adresse, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request WHERE requestor_id = '{user[0]}'")
+        requests = cursor.fetchall()
+        
+        # Construct list of request information
+        user_requests = []
+        for req in requests:
+            req_info = {
+                'id': req[0],
+                'location': json.loads(req[1]),
+                'adresse': req[2],
+                'team_id': req[3],
+                'is_dangerous': bool(req[4]),
+                'creation_date': req[5],
+                'lead_time': req[6],
+                'fix_date': req[7],
+                'status': req[8],
+                'image': req[9],
+                'requestor_id': req[10]
+            }
+            user_requests.append(req_info)
+        
+        # Append user information along with associated requests to the requestors list
+        requestors.append({'info': user_info, 'requests': user_requests})
+
+    cursor.close()
     
     return requestors
+
 
 def get_requestor_by_id(id):
     cursor = cnx.cursor()
     cursor.execute(f"SELECT id, firstname, lastname, adresse, email, tel FROM requestor WHERE id = '{id}'")
     user = cursor.fetchall()
     user = user[0] if len(user) > 0 else None
-    cursor.close()
-    
-    return {
-        'id': user[0], 
-        'firstname': user[1], 
-        'lastname': user[2], 
-        'adresse': user[3],
-        'email': user[4],
-        'tel': user[5]
-    } if user else None
+
+    if user:
+        # Extract user information
+        user_info = {
+            'id': user[0], 
+            'firstname': user[1], 
+            'lastname': user[2], 
+            'adresse': user[3],
+            'email': user[4],
+            'tel': user[5]
+        }
+        
+        cursor.execute(f"SELECT id, location, adresse, team_id, is_dangerous, creation_date, lead_time, fix_date, status, image, requestor_id FROM request WHERE requestor_id = '{id}'")
+        requests = cursor.fetchall()
+        
+        user_requests = []
+        for req in requests:
+            req_info = {
+                'id': req[0],
+                'location': json.loads(req[1]),
+                'adresse': req[2],
+                'team_id': req[3],
+                'is_dangerous': bool(req[4]),
+                'creation_date': req[5],
+                'lead_time': req[6],
+                'fix_date': req[7],
+                'status': req[8],
+                'image': req[9],
+                'requestor_id': req[10]
+            }
+            user_requests.append(req_info)
+
+        cursor.close()
+        
+        return {'info': user_info, 'requests': user_requests}
+    else:
+        cursor.close()
+        return None
 
 def get_requestor_by_tel(tel):
     cursor = cnx.cursor()

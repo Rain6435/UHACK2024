@@ -62,11 +62,11 @@ def create_request(request):
         
     # Add requestor info
     if firstname and lastname and tel:
-        user = get_requestor_by_name_and_tel(firstname=firstname, lastname=lastname, tel=tel)
+        requestor_id = get_requestor_by_name_and_tel(firstname=firstname, lastname=lastname, tel=tel).get("id")
     else:
         abort(Response(return_error_response('ERR_GENERAL_E001', 'INVALID missinge firstname, lastname or tel'), HTTP_CODE_UNAUTHORIZED, content_type=MIME_TYPE_JSON))
 
-    if not user:
+    if not requestor_id:
         requestor_id = insert_requestor(firstname=firstname, lastname=lastname, tel=tel, email=email)
 
     if (request.method == "POST"):

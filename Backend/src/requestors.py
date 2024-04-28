@@ -44,16 +44,20 @@ def login_requestor(request):
 
 def create_requestor(request):
     body = request.json
-    firstname = body.get("firstname")
-    lastname = body.get("lastname")
-    tel = body.get("tel")
+    firstname = format_name(body.get("firstname"))
+    lastname = format_name(body.get("lastname"))
+    tel = format_tel(body.get("tel"))
     email = body.get("email")
     adresse = body.get("adresse")
+    id = body.get("id")
+    
 
     if request.method == "POST":
         requestor_id = insert_requestor(firstname=firstname, lastname=lastname, tel=tel, email=email, adresse=adresse)
+    elif id:
+        requestor_id = modify_requestor(id=id, firstname=firstname, lastname=lastname, tel=tel, email=email, adresse=adresse)
     else:
-        requestor_id = modify_requestor(firstname=firstname, lastname=lastname, tel=tel, email=email, adresse=adresse)
+        abort(Response(return_error_response('ERR_GENERAL_E001', 'INVALID id'), HTTP_CODE_UNAUTHORIZED, content_type=MIME_TYPE_JSON))
 
     return requestor_id
 
