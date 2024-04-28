@@ -131,7 +131,7 @@ def assign_potholes(chain_of_potholes, nb_of_teams, max_work_time):
     '''
     # Assuming an average moving speed of 45km/h, and a pothole repair to last 15 minutes
     speed = 45
-    repair_time = 15
+    repair_time = 25
 
     # initialize each team as having no work
     teams_workload = [[0, []] for x in range(nb_of_teams)]
