@@ -30,8 +30,8 @@ def get_requests(request):
 def create_request(request):
     body = request.json
 
-    adresse_componenet = body.get('potholeAddress').get("address_components")
-    adresse = body.get('potholeAddress').get("formatted_address")
+    adresse_componenet = body.get('potholeAddress', {}).get("address_components")
+    adresse = body.get('potholeAddress', {}).get("formatted_address")
     dangerous = body.get('dangerous')
     image = body.get('image')
     email = body.get('email')
