@@ -38,6 +38,7 @@ def get_team_by_id(id):
     } if team else None
 
 def get_all_teams():
+    cursor = cnx.cursor()
     cursor.execute(f"SELECT id, name, password, work_time, work_season, secteur, is_admin FROM team")
     teams = cursor.fetchall()
     ret = []
@@ -113,12 +114,15 @@ def get_all_requests():
 
 def insert_request(location, is_dangerous, creation_date, adresse, status, image, requestor_id, team_id=None, lead_time=None, fix_date=None):
     try:
+        print("calling insert_request")
         cursor = cnx.cursor()
         cursor.execute(f"INSERT INTO request (location, team_id, is_dangerous, creation_date, adresse, lead_time, fix_date, status, image, requestor_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (location, team_id, is_dangerous, creation_date, adresse, lead_time, fix_date, status, image, requestor_id))
+        print("CURSOR", cursor)
+        print("cnx", cnx)
         cnx.commit()
-        cursor.close()
         return cursor.lastrowid
-    except mysql.connector.errors.IntegrityError:
+    except mysql.connector.errors.IntegrityError as e:
+        print("ERR", e)
         return None
 
 def modify_request(id, location=None, is_dangerous=None, adresse=None, status=None, image=None, team_id=None, lead_time=None, fix_date=None, priority=None):
@@ -209,8 +213,6 @@ def get_all_requestor():
         
         # Append user information along with associated requests to the requestors list
         requestors.append({'info': user_info, 'requests': user_requests})
-
-    cursor.close()
     
     return requestors
 

@@ -1,10 +1,12 @@
 import pandas as pd
 import json
+import random
 from flask import Response, abort
 
 from utils.api_wrapper import (return_error_response, HTTP_CODE_FORBIDDEN, HTTP_CODE_UNAUTHORIZED, MIME_TYPE_JSON)
 from utils.db import (
     get_all_requests, 
+    get_all_requestor,
     get_request_id, 
     insert_request, 
     get_requestor_by_email, 
@@ -12,12 +14,13 @@ from utils.db import (
     get_requestor_by_tel, 
     get_requestor_by_name_and_tel,
     insert_requestor,
-    modify_request
+    modify_request,
+    get_all_teams
 )
-from utils.csv_util import get_voie_routier
+from utils.csv_util import get_voie_routier, get_pothole_test_data
 from utils.date import get_utc_now
 from utils.basic import format_tel, format_name
-from utils.algo import algo
+from utils.algo import schedule_potholes
 
 STATUS_PENDING = "PENDING"
 
@@ -93,5 +96,38 @@ def delete_request(request):
 
 def distribute_tasks(requests):
     # [ids of teams]
+    teams = get_all_teams()
+    requestors = get_all_requestor()
+    requestors_ids = [requestor.get("info").get("id") for requestor in requestors]
+    team_ids = [team.get("info").get("id") for team in teams]
 
-    pass
+    pothole_test_data = get_pothole_test_data()
+
+    print('id', team_ids)
+    print(pothole_test_data)
+
+    out = schedule_potholes(pothole_test_data, team_ids)
+
+    for team_id, pothole_id_obj in out.items():
+        print("lvl1", team_id, pothole_id_obj)
+        for priority, pothole_data in pothole_id_obj.items():
+            print("lvl2",priority, pothole_data)
+            location = pothole_data.get("address")
+            is_dangerous = pothole_data.get("is_dangerous")
+            date = pothole_data.get("date")
+        
+            req_id = insert_request(
+                location=json.dumps(location), # TODO
+                adresse=location,
+                is_dangerous=bool(is_dangerous), 
+                creation_date=get_utc_now(), 
+                lead_time=date,
+                team_id=team_id,
+                status=STATUS_PENDING,
+                image="",
+                requestor_id=random.choice(requestors_ids)
+            )
+            print("req_id", req_id)
+
+    return out
+

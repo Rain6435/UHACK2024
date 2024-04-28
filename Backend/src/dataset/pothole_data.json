@@ -1,0 +1,62 @@
+[
+    {
+        "address": "230 Bd Saint-Joseph, Gatineau, QC J8Y 3X4, Canada",
+        "is_dangerous": true,
+        "date": "2023-07-24",
+        "segment": "Allée"
+    },
+    {
+        "address": "92 Rue Labelle, Gatineau, QC J8Y, Canada",
+        "is_dangerous": true,
+        "date": "2024-01-26",
+        "segment": "Rue"
+    },
+    {
+        "address": "Prom. de la Gatineau, Chelsea, QC, Canada",
+        "is_dangerous": true,
+        "date": "2023-07-02",
+        "segment": "Croissant"
+    },
+    {
+        "address": "77 Rue Sherbrooke, Gatineau, QC J8Y 2K8, Canada",
+        "is_dangerous": true,
+        "date": "2023-09-20",
+        "segment": "Avenue"
+    },
+    {
+        "address": "788 Bd la Vérendrye O, Gatineau, QC J8R 4A8, Canada",
+        "is_dangerous": true,
+        "date": "2023-09-01",
+        "segment": "Rue"
+    },
+    {
+        "address": "230 Rue Saint-Louis, Gatineau, QC J8P 8B3, Canada",
+        "is_dangerous": true,
+        "date": "2023-10-11",
+        "segment": "Rue"
+    },
+    {
+        "address": "11 Rue de la Comète, Gatineau, QC J9A 2Y3, Canada",
+        "is_dangerous": true,
+        "date": "2023-09-03",
+        "segment": "Place"
+    },
+    {
+        "address": "611 Boulevard Saint-Joseph, Gatineau, Quebec J8Y 4A6",
+        "is_dangerous": true,
+        "date": "2023-12-30",
+        "segment": "Allée"
+    },
+    {
+        "address": "78 Bd Gréber, Gatineau, QC J8T 3P8",
+        "is_dangerous": true,
+        "date": "2023-07-10",
+        "segment": "Route"
+    },
+    {
+        "address": "60 Bd Saint-Raymond, Gatineau, QC J8Y 1S1",
+        "is_dangerous": false,
+        "date": "2023-07-05",
+        "segment": "Chemin"
+    }
+]
