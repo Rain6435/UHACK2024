@@ -20,16 +20,14 @@ const TrackReportComponent: React.FC<Props> = () => {
   async function handleTrack(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setButtonState("reqSent");
-    console.log(reportId)
     await TrackReportMutation.mutateAsync(reportId)
       .then((report) => {
-        console.log(report);
         setButtonState("success");
-        //setTimeout(() => {
-        //  navigate("/report", {
-        //    state: { report: report },
-        //  });
-        //}, 1000);
+        setTimeout(() => {
+          navigate("/report", {
+            state: { report: report },
+          });
+        }, 1000);
       })
       .catch((e) => {
         setButtonState("default");

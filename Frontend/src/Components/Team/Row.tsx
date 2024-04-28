@@ -57,7 +57,7 @@ const Row: React.FC<Props> = (props) => {
   }
 
   return (
-    <div>
+    <div key={index}>
       <li key={index} className="flex">
         <p className="mr-auto my-auto w-1/3">{report.id}</p>
         <p className="m-auto w-1/3 text-center">{props.report.status}</p>

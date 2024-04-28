@@ -5,6 +5,7 @@ import Login from "../LogIn/Login";
 import Navbar from "../NavigationBar/Navbar";
 import Team from "../Team/Team";
 import TrackReportComponent from "../TrackReport/TrackReport";
+import ViewReport from "../ViewReport/ViewReport";
 
 const Router: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const Router: React.FC = () => {
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/team" element={<Team></Team>}></Route>
         <Route path="/track" element={<TrackReportComponent></TrackReportComponent>}></Route>
+        <Route path="/report" element={<ViewReport></ViewReport>}></Route>
         <Route path="*" element={<NotFound></NotFound>}></Route>
       </Routes>
     </div>

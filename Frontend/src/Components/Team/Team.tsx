@@ -2,10 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ReportObjectProps, TeamInfo } from "../../Types/Types";
 import Row from "./Row";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { TeamLogIn } from "../../Tools/AuthUtils";
 import { useMutation } from "react-query";
-import ServerError from "../../Types/Errors/ServerError";
 
 interface Props {}
 
@@ -18,10 +16,12 @@ const Team: React.FC<Props> = () => {
   const TeamLogInMutation = useMutation((credentials: string) =>
     TeamLogIn(credentials)
   );
-
   const [info, setInfo] = useState<TeamInfo>();
   useEffect(() => {
-    
+    TeamLogInMutation.mutateAsync(teamId).then((data)=>{
+      setInfo(data.info)
+      setReports(data.requests)
+    }).catch(()=>{})
   }, []);
   return (
     <div className="flex m-4 flex-col">

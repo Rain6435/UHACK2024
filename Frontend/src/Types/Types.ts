@@ -3,9 +3,9 @@ export type ReportObjectProps = {
   location_id: number;
   team_id: number;
   is_dangerous: boolean;
-  creation_date: Date;
-  lead_time: Date;
-  fix_date: Date;
+  creation_date: string;
+  lead_time: string;
+  fix_date: string;
   status: string;
   initialStatus:string;
   image_path: string;
