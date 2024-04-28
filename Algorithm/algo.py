@@ -21,7 +21,7 @@ street_priority = {
     "Croissant": 3,
 }
 
-def schedule_potholes(potholes, teams, streets):
+def schedule_potholes(potholes, teams):
     '''
     Inputs:
         list of potholes
@@ -85,9 +85,10 @@ def organize_potholes(potholes):
     }
 
     for pothole in potholes:
-        if pothole.is_dangerous:
-            # Get the string attribute GENERIQUE, to classify the potholes
-            street = pothole.location.segment # TODO: update this to correctly get street
+        # Get the string attribute GENERIQUE, to classify the potholes
+        street = pothole["segment"]
+
+        if pothole["is_dangerous"]:
             if street_priority[street] == 1:
                 sorted_potholes["dangerous"]["main"].append(pothole)
             if street_priority[street] == 2:
@@ -98,8 +99,6 @@ def organize_potholes(potholes):
                 # should never be here, show error if that's the case
                 pass
         else:
-            # Get the string attribute GENERIQUE, to classify the potholes
-            street = pothole.location.segment # TODO: update this to correctly get street
             if street_priority[street] == 1:
                 sorted_potholes["non-dangerous"]["main"].append(pothole)
             if street_priority[street] == 2:
@@ -121,15 +120,17 @@ def organize_potholes(potholes):
     return sorted_potholes
 
 
-def calculate_distance(pothole1, pothole2):
+def calculate_distance(pothole1, pothole2, use_age=False):
     '''
-    Get distance between two potholes
+    Get distance between two potholes, from pothole1 to pothole2
+    The age is used by artificially decreasing the distance the older
+    pothole 2 is. This makes this route more attractive
     '''
-    # TODO: make sure we are getting address correctly
-    address1 = pothole1.address
-    address2 = pothole2.address
+    address1 = pothole1["address"]
+    address2 = pothole2["address"]
 
-    geolocator = Nominatim(user_agent="Potholes")
+    print(address1, address2)
+    geolocator = Nominatim(user_agent="Potholes", timeout=3)
 
     location1 = geolocator.geocode(address1)
     location2 = geolocator.geocode(address2)
@@ -137,23 +138,21 @@ def calculate_distance(pothole1, pothole2):
     coords1 = (location1.latitude, location1.longitude)
     coords2 = (location2.latitude, location2.longitude)
 
-    return geodesic(coords1, coords2).kilometers
+    # in this context, a day old reduces the weight by 1 km
+    # This parameter can be modified to give it a different weight
+    if use_age:
+        geodesic(coords1, coords2).kilometers - date_to_number
+    else:
+        return geodesic(coords1, coords2).kilometers
 
 
-def date_to_number(pothole, format='%Y-%m-%d', reference_date=datetime(1970, 1, 1)):
+def date_to_number(pothole, format='%Y-%m-%d', reference_date=datetime.now()):
     '''
     Return a numerical value given an SQL data object 
     '''
-    date_object = datetime.strptime(pothole.date, format)
-    delta = date_object - reference_date
+    date_object = datetime.strptime(pothole["date"], format)
+    delta = reference_date - date_object
     return delta.days
-
-
-def get_address_string(pothole):
-    '''
-    Get address string from pothole object
-    '''
-    return pothole.location.string_location # TODO: make this work
 
 
 def assign_potholes(chain_of_potholes, nb_of_teams, max_work_time):
@@ -166,10 +165,10 @@ def assign_potholes(chain_of_potholes, nb_of_teams, max_work_time):
     '''
     # Assuming an average moving speed of 45km/h, and a pothole repair to last 15 minutes
     speed = 45
-    repair_time = 15
+    repair_time = 100
 
     # initialize each team as having no work
-    teams_workload = [(0, []) for x in range(nb_of_teams)]
+    teams_workload = [[0, []] for x in range(nb_of_teams)]
 
     # Current pothole index in chain
     pothole_nb = 0
@@ -181,7 +180,7 @@ def assign_potholes(chain_of_potholes, nb_of_teams, max_work_time):
         while True and pothole_nb < len(chain_of_potholes):
             # If no potholes currently assigned, directly assign one
             if teams_workload[team_nb][1] == []:
-                teams_workload[team_nb] = (15, [chain_of_potholes[pothole_nb]])
+                teams_workload[team_nb] = [15, [chain_of_potholes[pothole_nb]]]
 
                 pothole_nb += 1
             else:
@@ -205,8 +204,4 @@ def assign_potholes(chain_of_potholes, nb_of_teams, max_work_time):
     
     # Return only the list of potholes the teams will work on
     return [team[1] for team in teams_workload]
-
-        
-
-
 

@@ -27,6 +27,8 @@ class Graph():
 
     def nearest_neighbor(self):
         # Start from the first vertex in the graph
+        if self.potholes == []:
+            return []
         current_vertex = self.potholes[0]
         path = [current_vertex]
 
@@ -56,7 +58,7 @@ def populate_distance_matrix(potholes_list, distance_func):
 
     for i in range(n):
         for j in range(i+1, n):
-            distance = distance_func(potholes_list[i], potholes_list[j])
+            distance = distance_func(potholes_list[i], potholes_list[j], use_age=True)
             distance_matrix[i][j] = distance
             distance_matrix[j][i] = distance
 
@@ -73,34 +75,49 @@ def join_6_paths(calculate_distance, path_1, path_2, path_3, path_4, path_5, pat
     final_path = path_1
 
     # Adding path_2
-    if calculate_distance(final_path[-1], path_2[0]) <= calculate_distance(final_path[-1], path_2[-1]):
-        final_path = final_path + path_2
-    else:
-        final_path = final_path + path_2[::-1]
+    if path_2:
+        if not final_path:
+            final_path = path_2
+        elif calculate_distance(final_path[-1], path_2[0]) <= calculate_distance(final_path[-1], path_2[-1]):
+            final_path = final_path + path_2
+        else:
+            final_path = final_path + path_2[::-1]
     
     # Adding path_3
-    if calculate_distance(final_path[-1], path_3[0]) <= calculate_distance(final_path[-1], path_3[-1]):
-        final_path = final_path + path_3
-    else:
-        final_path = final_path + path_3[::-1]
+    if path_3:
+        if not final_path:
+            final_path = path_3
+        if calculate_distance(final_path[-1], path_3[0]) <= calculate_distance(final_path[-1], path_3[-1]):
+            final_path = final_path + path_3
+        else:
+            final_path = final_path + path_3[::-1]
     
     # Adding path_4
-    if calculate_distance(final_path[-1], path_4[0]) <= calculate_distance(final_path[-1], path_4[-1]):
-        final_path = final_path + path_4
-    else:
-        final_path = final_path + path_4[::-1]
+    if path_4:
+        if not final_path:
+            final_path = path_4
+        if calculate_distance(final_path[-1], path_4[0]) <= calculate_distance(final_path[-1], path_4[-1]):
+            final_path = final_path + path_4
+        else:
+            final_path = final_path + path_4[::-1]
     
     # Adding path_5
-    if calculate_distance(final_path[-1], path_5[0]) <= calculate_distance(final_path[-1], path_5[-1]):
-        final_path = final_path + path_5
-    else:
-        final_path = final_path + path_5[::-1]
+    if path_5:
+        if not final_path:
+            final_path = path_5
+        if calculate_distance(final_path[-1], path_5[0]) <= calculate_distance(final_path[-1], path_5[-1]):
+            final_path = final_path + path_5
+        else:
+            final_path = final_path + path_5[::-1]
     
     # Adding path_6
-    if calculate_distance(final_path[-1], path_6[0]) <= calculate_distance(final_path[-1], path_6[-1]):
-        final_path = final_path + path_6
-    else:
-        final_path = final_path + path_6[::-1]
+    if path_6:
+        if not final_path:
+            final_path = path_6
+        if calculate_distance(final_path[-1], path_6[0]) <= calculate_distance(final_path[-1], path_6[-1]):
+            final_path = final_path + path_6
+        else:
+            final_path = final_path + path_6[::-1]
 
 
     return final_path
