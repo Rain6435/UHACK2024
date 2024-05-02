@@ -8,7 +8,7 @@ export type ReportObjectProps = {
   fix_date: string;
   status: string;
   initialStatus:string;
-  image_path: string;
+  image: string;
   requestor_id: number;
   adresse:string;
 };

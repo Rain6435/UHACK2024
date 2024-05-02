@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import CheckIcon from "../../assets/CheckIcon";
+import CheckIcon from "../../../assets/CheckIcon";
 import { useMutation } from "react-query";
-import { CitoyenLogIn } from "../../Tools/AuthUtils";
+import { CitoyenLogIn } from "../../../Tools/AuthUtils";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import ServerError from "../../Types/Errors/ServerError";
-import BaseDialog from "../Dialogs/BaseDialog";
+import ServerError from "../../../Types/Errors/ServerError";
+import BaseDialog from "../../Dialogs/BaseDialog";
 
 const Citoyen: React.FC = () => {
   const [tel, setTel] = useState("");
@@ -26,7 +26,7 @@ const Citoyen: React.FC = () => {
     await CitoyenLogMutation.mutateAsync({ tel, fname, lname })
       .then((data) => {
         setButtonState("success");
-        localStorage.setItem("logged","citoyen,"+data.id);
+        localStorage.setItem("logged", "citoyen," + data.id);
         setTimeout(() => {
           navigate("/user", {
             state: { id: data.id },
@@ -48,7 +48,7 @@ const Citoyen: React.FC = () => {
       });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (localStorage.getItem("logged")?.split(",")[0] == "citoyen") {
       navigate("/user", {
         state: { id: localStorage.getItem("logged")?.split(",")[1] },
@@ -59,7 +59,7 @@ const Citoyen: React.FC = () => {
         state: { id: localStorage.getItem("logged")?.split(",")[1] },
       });
     }
-  })
+  });
 
   return (
     <div>
@@ -73,7 +73,7 @@ const Citoyen: React.FC = () => {
       </h1>
       <div className="card w-max m-auto bg-base-100 shadow-xl">
         <div className="card-body">
-          <form className="flex flex-col m-auto gap-4" onSubmit={handleLogIn}>
+          <form className="flex flex-col m-auto gap-4" onSubmit={handleLogIn} autoComplete="true">
             <div className="border-b-4 pb-4">
               <p>Numéro de téléphone</p>
               <label>
@@ -82,6 +82,7 @@ const Citoyen: React.FC = () => {
                   type="tel"
                   placeholder=""
                   onChange={(e) => setTel(e.target.value)}
+                  autoComplete="true"
                 />
               </label>
             </div>
@@ -95,7 +96,6 @@ const Citoyen: React.FC = () => {
                   value={fname}
                   onChange={(e) => setFname(e.target.value)}
                   required
-                  autoComplete="off"
                 />
               </label>
               <label>

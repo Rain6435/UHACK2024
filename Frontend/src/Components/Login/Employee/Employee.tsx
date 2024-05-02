@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { TeamLogIn } from "../../Tools/AuthUtils";
+import { TeamLogIn } from "../../../Tools/AuthUtils";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import PersonIconFilled from "../../assets/PersonIconFilled";
-import ServerError from "../../Types/Errors/ServerError";
-import CheckIcon from "../../assets/CheckIcon";
-import BaseDialog from "../Dialogs/BaseDialog";
+import PersonIconFilled from "../../../assets/PersonIconFilled";
+import ServerError from "../../../Types/Errors/ServerError";
+import CheckIcon from "../../../assets/CheckIcon";
+import BaseDialog from "../../Dialogs/BaseDialog";
 
 interface Props {}
 
@@ -23,8 +23,11 @@ const Login: React.FC<Props> = () => {
     await TeamLogInMutation.mutateAsync(teamId)
       .then((data) => {
         setButtonState("success");
-        console.log(teamId)
-        localStorage.setItem("logged","employe,"+teamId)
+        if (data.info.is_admin == 1) {
+          localStorage.setItem("logged", "admin," + teamId);
+        } else {
+          localStorage.setItem("logged", "employe," + teamId);
+        }
         setTimeout(() => {
           navigate("/team", {
             state: { id: teamId },
@@ -46,19 +49,21 @@ const Login: React.FC<Props> = () => {
       });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (localStorage.getItem("logged")?.split(",")[0] == "citoyen") {
       navigate("/user", {
         state: { id: localStorage.getItem("logged")?.split(",")[1] },
       });
     }
-    if (localStorage.getItem("logged")?.split(",")[0] == "employe") {
-      console.log(localStorage.getItem("logged")?.split(",")[1]);
+    if (
+      localStorage.getItem("logged")?.split(",")[0] == "employe" ||
+      localStorage.getItem("logged")?.split(",")[0] == "admin"
+    ) {
       navigate("/team", {
         state: { id: localStorage.getItem("logged")?.split(",")[1] },
       });
     }
-  })
+  });
 
   return (
     <div className="card flex flex-col w-96 mt-2 mb-10 m-auto h-1/2">

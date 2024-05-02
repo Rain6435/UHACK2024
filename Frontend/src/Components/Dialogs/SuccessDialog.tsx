@@ -30,17 +30,18 @@ const SuccessDialog: React.FC<Props> = (props) => {
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-3">{props.title}</h3>
           <p className="">{props.message}</p>
-          <div>
-            <p>{props.reportId}</p>
-            <button onClick={copyToClipboard}>
-              <ClipboardIcon></ClipboardIcon>
-            </button>
-          </div>
-
-          <div className="modal-action">
-            <form method="dialog" onSubmit={Exit}>
-              <button className="btn">Close</button>
-            </form>
+          <div className="flex my-4">
+            <div className="my-auto">
+              <p>{props.reportId}</p>
+              <button className="btn btn-outline" onClick={copyToClipboard}>
+                <ClipboardIcon></ClipboardIcon>
+              </button>
+            </div>
+            <div className="modal-action my-auto ml-auto">
+              <form method="dialog" onSubmit={Exit}>
+                <button className="btn">Close</button>
+              </form>
+            </div>
           </div>
         </div>
       </dialog>

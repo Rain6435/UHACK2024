@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { API_URL } from "./Globals";
 import ServerError from "../Types/Errors/ServerError";
+import { ReportObjectProps } from "../Types/Types";
 
 /**
  * Constructs the complete API endpoint URL by concatenating the base URL with the provided endpoint.
@@ -77,7 +78,6 @@ export async function CitoyenReports(id: number) {
 }
 export async function TeamLogIn(teamId: string) {
   try {
-    console.log(teamId);
     // Send a POST request to the login endpoint of the API with the provided email and password
     const response: AxiosResponse<any> = await axios.get(API("v1/teams"), {
       params: {
@@ -216,6 +216,40 @@ export async function GetTeams() {
     const response: AxiosResponse = await axios.get(API("v1/teams"));
     const data = response.data;
     return data.payload;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an AxiosError, extract the error message from the response data
+      switch (error.response?.status) {
+        case 404:
+          throw new Error(error.message || "Report not found.");
+        case 500:
+          throw new ServerError(
+            error.message ||
+              "Couldn't request reset password email. Server error."
+          );
+        default:
+          // If it's a generic Error, throw a default error message
+          throw new Error("Reset Password Request failed.");
+      }
+    } else {
+      throw new Error("Create Report failed.");
+    }
+  }
+}
+
+export async function TransferReport(report: ReportObjectProps) {
+  try {
+    const response: AxiosResponse = await axios.put(API("v1/requests"), {
+      id: report.id,
+      dangerous: report.is_dangerous,
+      status: report.status,
+      image: report.image,
+      team_id: report.team_id,
+      lead_time: report.lead_time,
+      fix_date: report.fix_date,
+    });
+    const status = response.status;
+    return status;
   } catch (error) {
     if (error instanceof AxiosError) {
       // If it's an AxiosError, extract the error message from the response data

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { Link, useLocation } from "react-router-dom";
-import { CitoyenReports } from "../../Tools/AuthUtils";
-import { ReportObjectProps } from "../../Types/Types";
-import ArrowIcon from "../../assets/ArrowIcon";
-import GiftIcon from "../../assets/GiftIcon";
+import { CitoyenReports } from "../../../Tools/AuthUtils";
+import { ReportObjectProps } from "../../../Types/Types";
+import ArrowIcon from "../../../assets/ArrowIcon";
+import GiftIcon from "../../../assets/GiftIcon";
+import Preview from "../../ImagePreview/Preview";
 const CitoyenView: React.FC = () => {
   let location = useLocation();
   const state = location.state;
@@ -32,6 +33,7 @@ const CitoyenView: React.FC = () => {
         <div className="m-auto flex gap-10">
           <div
             className="radial-progress  bg-gray-100 m-auto"
+            // @ts-ignore comment
             style={{ "--value": ((reports.length * 3) / 25) * 100 }}
             role="progressbar"
           >
@@ -56,16 +58,29 @@ const CitoyenView: React.FC = () => {
                     <h2 className="card-title text-m font-bold">
                       {report.adresse}
                     </h2>
-                    <div className="card-actions justify-end">
-                      <p>Statut:{report.status}</p>
-                      <Link
-                        to="/report"
-                        state={{
-                          report: report,
-                        }}
-                      >
-                        <button className="btn btn-primary">Détails</button>
-                      </Link>
+                    <p>Statut:{report.status}</p>
+                    <div className="flex">
+                      <div className="card-actions justify-end my-auto">
+                        <Link
+                          to="/report"
+                          state={{
+                            report: report,
+                          }}
+                        >
+                          <button className="btn btn-primary">Détails</button>
+                        </Link>
+                      </div>
+                      <div className="ml-auto">
+                        {report.image ? (
+                          <Preview
+                            image={report.image}
+                            width={100}
+                            height={100}
+                          ></Preview>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

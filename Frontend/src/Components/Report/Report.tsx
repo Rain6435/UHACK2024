@@ -1,13 +1,15 @@
 import { useState } from "react";
 import "./Report.css";
 import Autocomplete from "react-google-autocomplete";
-import { CreateReport, ReportProps } from "../../Tools/AuthUtils";
+import { CreateReport, ReportProps, TrackReport } from "../../Tools/AuthUtils";
 import CheckIcon from "../../assets/CheckIcon";
 import { useMutation } from "react-query";
 import { fileToBase64 } from "../../Tools/FileUtils";
-import SuccessDialog from "../Dialogs/SuccessDialog";
 import ServerError from "../../Types/Errors/ServerError";
 import BaseDialog from "../Dialogs/BaseDialog";
+import PlusIcon from "../../assets/PlusIcon";
+import { useNavigate } from "react-router-dom";
+import { MAP_API_KEY } from "../../Tools/Globals";
 interface Props {}
 
 const Report: React.FC<Props> = () => {
@@ -16,15 +18,21 @@ const Report: React.FC<Props> = () => {
   const [address, setAddress] = useState<any>();
   const [dangerous, setDangerous] = useState(false);
   const [image, setImage] = useState<string>("");
-  const [email,setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [tel, setTel] = useState<string>("");
 
   const [buttonState, setButtonState] = useState("default");
 
   const [reportId, setReportId] = useState<string>("");
 
+  const navigate = useNavigate();
+
   const CreateReportMutation = useMutation((credentials: ReportProps) =>
     CreateReport(credentials)
+  );
+
+  const TrackReportMutation = useMutation((credentials: string) =>
+    TrackReport(credentials)
   );
 
   async function handleUpload(event: React.FormEvent<HTMLInputElement>) {
@@ -45,24 +53,40 @@ const Report: React.FC<Props> = () => {
   async function handleReport(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setButtonState("reqSent");
-    console.log("here")
     await CreateReportMutation.mutateAsync({
       userFname: fname,
       userLname: lname,
       potholeAddress: address,
       dangerous: dangerous,
       image: image,
-      email:email,
-      tel:tel
+      email: email,
+      tel: tel,
     })
-      .then((reportId) => {
+      .then(async (reportId) => {
         setButtonState("success");
         setReportId(reportId.payload);
-      })
-      .then(() => {
-        (
-          document.getElementById("createSuccess") as HTMLDialogElement
-        ).showModal();
+        await TrackReportMutation.mutateAsync(reportId)
+          .then((report) => {
+            setButtonState("success");
+            setTimeout(() => {
+              navigate("/report", {
+                state: { report: report },
+              });
+            }, 1000);
+          })
+          .catch((e) => {
+            setButtonState("default");
+            if (e instanceof ServerError) {
+              (
+                document.getElementById("ServerFail") as HTMLDialogElement
+              ).showModal();
+            } else {
+              // Show error dialog
+              (
+                document.getElementById("createFail") as HTMLDialogElement
+              ).showModal();
+            }
+          });
       })
       .catch((e: any) => {
         setButtonState("default");
@@ -76,7 +100,7 @@ const Report: React.FC<Props> = () => {
             document.getElementById("createFail") as HTMLDialogElement
           ).showModal();
         }
-      });;
+      });
   }
 
   return (
@@ -110,7 +134,7 @@ const Report: React.FC<Props> = () => {
             <label>
               <p className="m-auto">Adresse du nid-de-poule</p>
               <Autocomplete
-                apiKey=""
+                apiKey={MAP_API_KEY}
                 onPlaceSelected={(place) => {
                   setAddress(place);
                 }}
@@ -121,6 +145,9 @@ const Report: React.FC<Props> = () => {
                 }}
                 placeholder=""
                 required
+                onError={(e)=>{
+                  console.log(e)
+                }}
               ></Autocomplete>
             </label>
             <label>
@@ -155,10 +182,23 @@ const Report: React.FC<Props> = () => {
               />
             </label>
             <label>
-              <p className="m-auto">Ajouter une image?</p>
+              <div className="flex">
+                <p className="m-auto">Ajouter une image?</p>
+                <button
+                  className="btn btn-outline"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    (document.getElementById("getFile") as any).click();
+                  }}
+                >
+                  <PlusIcon></PlusIcon>
+                </button>
+              </div>
+
               <input
                 type="file"
-                className="file-input file-input-bordered w-full max-w-xs"
+                className="hidden"
+                id="getFile"
                 accept="image/*"
                 capture="environment"
                 onChange={handleUpload}
@@ -168,7 +208,7 @@ const Report: React.FC<Props> = () => {
               {buttonState == "reqSent" ? (
                 <span className="loading loading-infinity loading-lg m-auto my-1"></span>
               ) : buttonState == "success" ? (
-                <button className="btn btn-primary w-full my-2">
+                <button className="btn btn-success w-full my-2">
                   <CheckIcon></CheckIcon>
                 </button>
               ) : (
@@ -182,12 +222,6 @@ const Report: React.FC<Props> = () => {
           </form>
         </div>
       </div>
-      <SuccessDialog
-        componentName="createSuccess"
-        title="Merci!"
-        message="Votre contribution est importante et appréciée. Voici le numéro de confirmation de votre signalement. Veuillez le sauvegarder pour traçer l'avancement de la réparation du nid-de-poule."
-        reportId={reportId}
-      ></SuccessDialog>
       <BaseDialog
         componentName="createFail"
         title="Il a y un ick!"

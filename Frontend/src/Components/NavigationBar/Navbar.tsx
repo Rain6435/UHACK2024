@@ -42,6 +42,8 @@ const Navbar: React.FC<Props> = () => {
               className={
                 localStorage.getItem("logged")?.split(",")[0] == "employe"
                   ? "hidden"
+                  : localStorage.getItem("logged")?.split(",")[0] == "admin"
+                  ? "hidden"
                   : "btn m-2"
               }
             >
@@ -68,7 +70,7 @@ const Navbar: React.FC<Props> = () => {
               </Link>
             </li>
             <li
-              onClick={()=>{
+              onClick={() => {
                 handleClick();
                 localStorage.clear();
                 navigate("/");
