@@ -1,23 +1,21 @@
-from flask import Flask
 from flask import request
-from flask_cors import CORS, cross_origin
 
 from utils.api_wrapper import (
-    return_success_response, 
+    return_success_response,
     create_cors_enabled_app,
-    HTTP_CODE_OK, 
-    HTTP_CODE_CREATED, 
+    HTTP_CODE_OK,
+    HTTP_CODE_CREATED,
     HTTP_CODE_NO_CONTENT,
-    MIME_TYPE_JSON
+    MIME_TYPE_JSON,
 )
 import teams
 import requestors
 import _requests
 
+# Create a Flask app with CORS enabled
 app = create_cors_enabled_app(__name__)
 
-
-# HTTP Methode
+# Constants for HTTP methods
 GET = "GET"
 POST = "POST"
 PUT = "PUT"
@@ -31,62 +29,201 @@ TEAMS_ROUTE = "/teams"
 REQUESTORS_ROUTE = "/users"
 REQUESTS_ROUTE = "/requests"
 
-@app.route(V1+HEALTH, methods=[GET])
+
+@app.route(V1 + HEALTH, methods=[GET])
 def get_health():
-    return app.response_class(response=return_success_response('operational'), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to check the health of the application.
+
+    Returns:
+        Response indicating the operational status.
+    """
+    return app.response_class(
+        response=return_success_response("operational"),
+        status=HTTP_CODE_OK,
+        mimetype=MIME_TYPE_JSON,
+    )
+
 
 # Algo
-
-@app.route(V1+REQUESTS_ROUTE+"/distribute", methods=[PUT])
+@app.route(V1 + REQUESTS_ROUTE + "/distribute", methods=[PUT])
 def calculate_algo():
-    return app.response_class(response=return_success_response(_requests.distribute_tasks(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to calculate the algorithm for distributing tasks.
+
+    Returns:
+        Response indicating the success of the algorithm calculation.
+    """
+    return app.response_class(
+        response=return_success_response(_requests.distribute_tasks(request)),
+        status=HTTP_CODE_OK,
+        mimetype=MIME_TYPE_JSON,
+    )
+
 
 # Teams
-
-@app.route(V1+TEAMS_ROUTE, methods=[GET])
+@app.route(V1 + TEAMS_ROUTE, methods=[GET])
 def get_teams():
-    return app.response_class(response=return_success_response(teams.get_teams(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to retrieve all teams.
 
-@app.route(V1+TEAMS_ROUTE, methods=[PUT, POST])
+    Returns:
+        Response containing the list of teams.
+    """
+    return app.response_class(
+        response=return_success_response(teams.get_teams(request)),
+        status=HTTP_CODE_OK,
+        mimetype=MIME_TYPE_JSON,
+    )
+
+
+@app.route(V1 + TEAMS_ROUTE, methods=[PUT, POST])
 def post_teams():
-    return app.response_class(response=return_success_response(teams.create_team(request)), status=HTTP_CODE_CREATED, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to create or modify a team.
 
-@app.route(V1+TEAMS_ROUTE+LOGIN, methods=[POST])
+    Returns:
+        Response indicating the success of the team creation or modification.
+    """
+    return app.response_class(
+        response=return_success_response(teams.create_team(request)),
+        status=HTTP_CODE_CREATED,
+        mimetype=MIME_TYPE_JSON,
+    )
+
+
+@app.route(V1 + TEAMS_ROUTE + LOGIN, methods=[POST])
 def login_team():
-    return app.response_class(response=return_success_response(teams.login_team(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint for team login.
 
-@app.route(V1+TEAMS_ROUTE, methods=[DELETE])
+    Returns:
+        Response containing the login status of the team.
+    """
+    return app.response_class(
+        response=return_success_response(teams.login_team(request)),
+        status=HTTP_CODE_OK,
+        mimetype=MIME_TYPE_JSON,
+    )
+
+
+@app.route(V1 + TEAMS_ROUTE, methods=[DELETE])
 def delete_teams():
-    return app.response_class(response=return_success_response(teams.delete_team(request)), status=HTTP_CODE_NO_CONTENT, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to delete a team.
+
+    Returns:
+        Response indicating the success of the team deletion.
+    """
+    return app.response_class(
+        response=return_success_response(teams.delete_team(request)),
+        status=HTTP_CODE_NO_CONTENT,
+        mimetype=MIME_TYPE_JSON,
+    )
+
 
 # Requestor
-
-@app.route(V1+REQUESTORS_ROUTE, methods=[GET])
+@app.route(V1 + REQUESTORS_ROUTE, methods=[GET])
 def get_requestors():
-    return app.response_class(response=return_success_response(requestors.get_requestors(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to retrieve all requestors.
 
-@app.route(V1+REQUESTORS_ROUTE, methods=[PUT, POST])
+    Returns:
+        Response containing the list of requestors.
+    """
+    return app.response_class(
+        response=return_success_response(requestors.get_requestors(request)),
+        status=HTTP_CODE_OK,
+        mimetype=MIME_TYPE_JSON,
+    )
+
+
+@app.route(V1 + REQUESTORS_ROUTE, methods=[PUT, POST])
 def post_requestors():
-    return app.response_class(response=return_success_response(requestors.create_requestor(request)), status=HTTP_CODE_CREATED, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to create or modify a requestor.
 
-@app.route(V1+REQUESTORS_ROUTE+ LOGIN, methods=[POST])
+    Returns:
+        Response indicating the success of the requestor creation or modification.
+    """
+    return app.response_class(
+        response=return_success_response(requestors.create_requestor(request)),
+        status=HTTP_CODE_CREATED,
+        mimetype=MIME_TYPE_JSON,
+    )
+
+
+@app.route(V1 + REQUESTORS_ROUTE + LOGIN, methods=[POST])
 def login_requestors():
-    return app.response_class(response=return_success_response(requestors.login_requestor(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint for requestor login.
 
-@app.route(V1+REQUESTORS_ROUTE, methods=[DELETE])
+    Returns:
+        Response containing the login status of the requestor.
+    """
+    return app.response_class(
+        response=return_success_response(requestors.login_requestor(request)),
+        status=HTTP_CODE_OK,
+        mimetype=MIME_TYPE_JSON,
+    )
+
+
+@app.route(V1 + REQUESTORS_ROUTE, methods=[DELETE])
 def delete_requestors():
-    return app.response_class(response=return_success_response(requestors.delete_requestor(request)), status=HTTP_CODE_NO_CONTENT, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to delete a requestor.
+
+    Returns:
+        Response indicating the success of the requestor deletion.
+    """
+    return app.response_class(
+        response=return_success_response(requestors.delete_requestor(request)),
+        status=HTTP_CODE_NO_CONTENT,
+        mimetype=MIME_TYPE_JSON,
+    )
+
 
 # Request
-
-@app.route(V1+REQUESTS_ROUTE, methods=[GET])
+@app.route(V1 + REQUESTS_ROUTE, methods=[GET])
 def get_request():
-    return app.response_class(response=return_success_response(_requests.get_requests(request)), status=HTTP_CODE_OK, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to retrieve all requests.
 
-@app.route(V1+REQUESTS_ROUTE, methods=[PUT, POST])
+    Returns:
+        Response containing the list of requests.
+    """
+    return app.response_class(
+        response=return_success_response(_requests.get_requests(request)),
+        status=HTTP_CODE_OK,
+        mimetype=MIME_TYPE_JSON,
+    )
+
+
+@app.route(V1 + REQUESTS_ROUTE, methods=[PUT, POST])
 def post_request():
-    return app.response_class(response=return_success_response(_requests.create_request(request)), status=HTTP_CODE_CREATED, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to create or modify a request.
 
-@app.route(V1+REQUESTS_ROUTE, methods=[DELETE])
+    Returns:
+        Response indicating the success of the request creation or modification.
+    """
+    return app.response_class(
+        response=return_success_response(_requests.create_request(request)),
+        status=HTTP_CODE_CREATED,
+        mimetype=MIME_TYPE_JSON,
+    )
+
+
+@app.route(V1 + REQUESTS_ROUTE, methods=[DELETE])
 def delete_request():
-    return app.response_class(response=return_success_response(_requests.delete_request(request)), status=HTTP_CODE_NO_CONTENT, mimetype=MIME_TYPE_JSON)
+    """
+    Endpoint to delete a request.
+
+    Returns:
+        Response indicating the success of the request deletion.
+    """
+    return app.response_class(
+        response=return_success_response(_requests.delete_request(request)),
+        status=HTTP_CODE_NO_CONTENT,
+        mimetype=MIME_TYPE_JSON,
+    )

@@ -1,122 +1,160 @@
-# Expertus, an IBM Company Confidential
-# © Expertus, an IBM Company 2018, 2022, 2023
-import json
-import uuid
-import os
-from typing import Optional
+import json  # Importing the json module for JSON serialization and deserialization
+import uuid  # Importing the uuid module for generating universally unique identifiers
+from typing import Optional  # Importing the Optional type from the typing module
 
-from flask import Blueprint, Flask
+from flask import (
+    Blueprint,
+    Flask,
+)  # Importing Flask and Blueprint from the Flask framework
 
-import utils.date as lib_date
-import utils.decimal_encoder as decimal_encoder
+import utils.date as lib_date  # Importing a custom utility module for date-related functions
+import utils.decimal_encoder as decimal_encoder  # Importing a custom JSON encoder module for handling decimal objects
 
-MIME_TYPE_JSON = 'application/json'
-MIME_TYPE_TEXT = 'text/plain'
+
+MIME_TYPE_JSON = "application/json"  # Constant representing the JSON MIME type
+MIME_TYPE_TEXT = "text/plain"  # Constant representing the plain text MIME type
+
 
 def create_cors_enabled_app(name, blueprint_name=None):
+    """
+    Creates a Flask application with CORS (Cross-Origin Resource Sharing) enabled.
+
+    Parameters:
+        name (str): The name of the Flask application.
+        blueprint_name (str): The name of the blueprint, if applicable.
+
+    Returns:
+        Flask or Blueprint: The Flask application instance or blueprint with CORS enabled.
+    """
     if blueprint_name is not None:
-        app = Blueprint(blueprint_name, name)
+        app = Blueprint(
+            blueprint_name, name
+        )  # Create a blueprint if a blueprint name is provided
     else:
-        app = Flask(name)
+        app = Flask(name)  # Otherwise, create a regular Flask application
 
     @app.after_request
     def add_cors_headers(response):
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-        response.headers['Access-Control-Allow-Methods'] = '*'
+        """
+        Adds CORS headers to the response.
+
+        Parameters:
+            response (Flask.Response): The Flask response object.
+
+        Returns:
+            Flask.Response: The modified Flask response object with CORS headers.
+        """
+        response.headers["Access-Control-Allow-Origin"] = (
+            "*"  # Allow requests from any origin
+        )
+        response.headers["Access-Control-Allow-Headers"] = (
+            "Content-Type"  # Allow the Content-Type header
+        )
+        response.headers["Access-Control-Allow-Methods"] = "*"  # Allow all HTTP methods
         return response
 
     return app
 
 
 def return_success_response(content, description: Optional[str] = None):
-    return json.dumps({
-            "response_id": str(uuid.uuid4()),
-            "date_utc": lib_date.get_utc_now(),
-            "payload": content,
-            "description": description,
-        }, cls=decimal_encoder.DecimalEncoder)
+    """
+    Returns a successful JSON response with the provided content.
+
+    Parameters:
+        content: The payload content of the response.
+        description (str, optional): A description of the response.
+
+    Returns:
+        str: A JSON-formatted success response.
+    """
+    return json.dumps(
+        {
+            "response_id": str(uuid.uuid4()),  # Generate a unique response ID
+            "date_utc": lib_date.get_utc_now(),  # Get the current UTC date and time
+            "payload": content,  # Set the payload content
+            "description": description,  # Set the response description
+        },
+        cls=decimal_encoder.DecimalEncoder,  # Use the custom decimal encoder for serialization
+    )
 
 
-def return_error_response(error_code, error_message, tag_generic='code', tag_specific='message'):
-    return json.dumps({
-        "response_id": str(uuid.uuid4()),
-        "date_utc": lib_date.get_utc_now(),
-        "error": {
-            tag_generic: error_code,
-            tag_specific: error_message
-        }
-    }, cls=decimal_encoder.DecimalEncoder)
+def return_error_response(
+    error_code, error_message, tag_generic="code", tag_specific="message"
+):
+    """
+    Returns an error JSON response with the provided error code and message.
 
+    Parameters:
+        error_code: The error code to indicate the type of error.
+        error_message: The error message describing the error.
+        tag_generic (str): The tag name for the generic error information.
+        tag_specific (str): The tag name for the specific error message.
+
+    Returns:
+        str: A JSON-formatted error response.
+    """
+    return json.dumps(
+        {
+            "response_id": str(uuid.uuid4()),  # Generate a unique response ID
+            "date_utc": lib_date.get_utc_now(),  # Get the current UTC date and time
+            "error": {
+                tag_generic: error_code,
+                tag_specific: error_message,
+            },  # Set the error information
+        },
+        cls=decimal_encoder.DecimalEncoder,  # Use the custom decimal encoder for serialization
+    )
+
+
+# HTTP Status Codes
 
 # OK
-# Successful.
 HTTP_CODE_OK = 200
 
 # Created
-# Created.
 HTTP_CODE_CREATED = 201
 
 # No Content
-# The server has fulfilled the request but does not need to return an entity-body.
 HTTP_CODE_NO_CONTENT = 204
 
 # Miscellaneous Persistent Warning
-# The warning text can include arbitrary information to be presented to a human user or logged.  A system receiving this warning MUST NOT
-# take any automated action.
 HTTP_MISC_PERSISTENT_WARNING = 299
 
 # Bad Request
-# Bad input parameter. Error message should indicate which one and why.
 HTTP_CODE_BAD_REQUEST = 400
 
 # Unauthorized
-# The client passed in the invalid Auth token. Client should refresh the token and then try again.
 HTTP_CODE_UNAUTHORIZED = 401
 
 # Forbidden
-# Customer does not exist. Application not registered. Application try to access to properties not belong to an App. Application try to trash/purge root node.
-# Application try to update contentProperties. Operation is blocked (for third-party apps). Customer account over quota.
 HTTP_CODE_FORBIDDEN = 403
 
 # Not Found
-# Resource not found.
 HTTP_CODE_NOT_FOUND = 404
 
 # Method Not Allowed
-# The resource doesn't support the specified HTTP verb.
 HTTP_CODE_METHOD_NOT_ALLOWED = 405
 
 # Conflict
-# Conflict.
 HTTP_CODE_CONFLICT = 409
 
 # Gone
-# Access to the target resource is no longer available at the origin server and this condition is likely to be permanent.
 HTTP_GONE = 410
 
 # Length Required
-# The Content-Length header was not specified.
 HTTP_CODE_LENGTH_REQUIRED = 411
 
 # Precondition Failed
-# Precondition failed.
 HTTP_CODE_PRECONDITION_FAILED = 412
 
 # Too Many Requests
-# Too many request for rate limiting.
 HTTP_CODE_TOO_MANY_REQUESTS = 429
 
 # Internal Server Error
-# Servers are not working as expected. The request is probably valid but needs to be requested again later.
 HTTP_CODE_INTERNAL_SERVER_ERROR = 500
 
 # Service Unavailable
-# Service Unavailable.
 HTTP_CODE_SERVICE_UNAVAILABLE = 503
 
 # Gateway Timeout
-# Indicates that the server, while acting as a gateway or proxy, did not get a response in time from the upstream server that it needed in order to complete
-# the request.
 HTTP_CODE_GATEWAY_TIMEOUT = 504
-
