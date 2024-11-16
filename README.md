@@ -21,4 +21,13 @@ The project's goal was to help find a solution for the city of Gatineau to find 
 
 ### Database
 
+This database is designed to manage service requests, the teams handling them, and the individuals submitting them.
+
+The key tables are:
+*request: Stores service request details like location, status, priority, and assigned team.
+*requestor: Contains information about the people submitting the requests (name, contact info, etc.).
+*team: Represents the teams responsible for handling requests, including their work schedules and work regions.
+
+
+
 
