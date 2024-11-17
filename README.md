@@ -38,18 +38,28 @@ The backend supports the management of road maintenance requests, teams, and use
 
 
 | Method | Route    | Functionality    |
-| :---:   | :---: | :---: |
+| :---   | :--- | :--- |
 | GET | /v1/requests   | Retrives all or specific requests   |
 | POST | /v1/requests   | Creates a new request   |
 | PUT | /v1/requests   | Updates an existing request   |
 | DELETE | /v1/requests   | Deletes a request  |
 | PUT | /v1/requests/distribute   | Distributes requests among teams   |
 
+The algorithm's endpoint /v1/requests/distribute is responsible for allocating repair tasks to different teams. It allocates repair tasks based on:
+
+* Priority
+* Location
+* Team Availability
+
+Input: Repair Request Data, Team IDs
+
+Output: A mapping of team IDs to assigned tasks
+
 3. User Management
 
 
 | Method | Route    | Functionality    |
-| :---:   | :---: | :---: |
+| :---   | :--- | :--- |
 | GET | /v1/users   | Retrives all or specific users  |
 | POST | /v1/users  | Creates a new user   |
 | PUT | /v1/users  | Updates an existing user   |
@@ -60,7 +70,7 @@ The backend supports the management of road maintenance requests, teams, and use
 
 
 | Method | Route    | Functionality    |
-| :---:   | :---: | :---: |
+| :---   | :--- | :--- |
 | GET | /v1/teams   | Retrives all or specific teams  |
 | POST | /v1/teams  | Creates a new team   |
 | PUT | /v1/teams  | Updates an existing team   |
