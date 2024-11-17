@@ -15,6 +15,47 @@ The project's goal was to help find a solution for the city of Gatineau to find 
 
 ### Algorithm
 
+This project implements an algorithm to efficiently schedule pothole repairs for maintenance teams. It prioritizes dangerous potholes on main roads and optimizes routes to minimize travel time and workload distribution among teams.
+
+#### Prioritization
+
+Three inputs are used to determine which potholes should be repaired first:
+
+1. Danger (How dangerous is the pothole?)
+2. Street Priority (Is the pothole on an important street?)
+3. Age of pothole (How long has the pothole been there?)
+
+Potholes are classified and sorted into six categories:
+
+1. Dangerous/Main
+2. Dangerous/Collector
+3. Dangerous/Local
+4. Non-dangerous/Main
+5. Non-dangerous/Collector
+6. Non-dangerous/Local
+
+The age of the pothole is only used as a deciding factor between two potholes in the same category, in which case the "older" one takes priority.
+
+#### Route Optimization
+
+For each category, the algorithm:
+
+* Builds a graph using pothole locations.
+* Finds an optimized path using a modified nearest-neighbor approach.
+* Combines paths across all categories into a single repair sequence using minimal transition distances.
+
+#### Workload distribution
+
+Teams are assigned potholes sequentially while respecting:
+
+* Travel Time: Calculated using geodesic distance and an average speed of 45 km/h.
+* Repair Time: Fixed at 15 minutes per pothole.
+* Workday Constraint: Maximum of 480 minutes per team.
+
+#### Output
+
+A dictionary mapping each team to its assigned potholes, including priority indices.
+
 ### Backend
 
 The backend supports the management of road maintenance requests, teams, and users. It features endpoints for creating, retrieving, updating, and deleting data, as well as task distribution logic for pothole fixes. It uses Flask for API management and MySQL for database operations.
