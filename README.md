@@ -61,7 +61,7 @@ To complete the "Local installation" section of the README:
      ```
    - Start the React development server:
      ```bash
-     npm start
+     npm run dev
      ```
 
 4. **Access the Application:**
