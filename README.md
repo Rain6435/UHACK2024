@@ -11,12 +11,6 @@ The project's goal was to help find a solution for the city of Gatineau to find 
 
 ## Local installation
 
-To complete the "Local installation" section of the README:
-
----
-
-## Local Installation
-
 ### Prerequisites
 
 1. Install [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/).
