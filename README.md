@@ -11,6 +11,63 @@ The project's goal was to help find a solution for the city of Gatineau to find 
 
 ## Local installation
 
+To complete the "Local installation" section of the README:
+
+---
+
+## Local Installation
+
+### Prerequisites
+
+1. Install [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/).
+2. Install [Python 3](https://www.python.org/) with `pip`.
+3. Set up MySQL and create a database.
+
+### Steps
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/Rain6435/UHACK2024.git
+   cd UHACK2024
+   ```
+
+2. **Backend Setup:**
+   - Navigate to the backend folder:
+     ```bash
+     cd backend
+     ```
+   - Install dependencies:
+     ```bash
+     pip install -r requirements.txt
+     ```
+   - Configure `config.py` with your MySQL credentials.
+   - Initialize the database:
+     ```bash
+     python init_db.py
+     ```
+   - Start the Flask server:
+     ```bash
+     flask run
+     ```
+
+3. **Frontend Setup:**
+   - Navigate to the frontend folder:
+     ```bash
+     cd ../frontend
+     ```
+   - Install dependencies:
+     ```bash
+     npm install
+     ```
+   - Start the React development server:
+     ```bash
+     npm start
+     ```
+
+4. **Access the Application:**
+   - Open `http://localhost:3000` in your browser for the frontend.
+   - Backend API will run on `http://localhost:5000`.
+
 ## Extensive documentation
 
 ### Algorithm
