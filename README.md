@@ -120,6 +120,176 @@ Output: A mapping of team IDs to assigned tasks
 
 ### Frontend
 
+The frontend is built using React with TypeScript and leverages several modern web technologies for a responsive and user-friendly interface.
+
+#### Tech Stack
+- React + TypeScript
+- React Router for navigation
+- React Query for server state management
+- Tailwind CSS + DaisyUI for styling
+- Google Maps API for location services
+
+#### Key Features
+
+1. **User Authentication**
+   - Citizen login using phone number and name
+   - Employee login using team ID
+   - Admin dashboard access for authorized teams
+   - Session management using localStorage
+
+2. **Pothole Reporting System**
+   - User-friendly form for reporting potholes
+   - Image upload capability
+   - Google Places autocomplete for accurate addresses
+   - Danger level indication
+   - Optional contact information for updates
+
+3. **Request Tracking**
+   - Unique ID tracking system for citizens
+   - Real-time status updates
+   - Image preview of reported potholes
+   - Detailed view of individual reports
+
+4. **Team Management Interface**
+   - Team-specific dashboard
+   - Request status management (En attente, En réparation, Complété)
+   - Task transfer between teams (admin only)
+   - Sorted display of requests by priority
+
+5. **Admin Dashboard**
+   - Overview of all teams
+   - Workload distribution visualization
+   - Request transfer capabilities
+   - Team performance monitoring
+
+#### Component Structure
+
+1. **Authentication Components**
+   - `Citoyen.tsx`: Citizen login interface
+   - `Employee.tsx`: Employee login interface
+   - Session management through localStorage
+
+2. **Core Components**
+   - `Router.tsx`: Main routing configuration
+   - `Navbar.tsx`: Navigation and user menu
+   - `Home.tsx`: Landing page
+   - `Report.tsx`: Pothole reporting form
+
+3. **Team Management**
+   - `Team.tsx`: Team dashboard
+   - `Row.tsx`: Individual request management
+   - `Admin.tsx`: Administrative controls
+
+4. **Request Tracking**
+   - `TrackReport.tsx`: Request lookup
+   - `ViewReport.tsx`: Detailed request view
+   - `CitoyenView.tsx`: Citizen dashboard
+
+5. **Utility Components**
+   - `BaseDialog.tsx`: Reusable dialog component
+   - `Preview.tsx`: Image preview component
+   - Various icon components
+
+#### Key Features Implementation
+
+1. **Authentication Flow**
+```typescript
+// Example from Employee.tsx
+async function handleLogIn(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  setButtonState("reqSent");
+  await TeamLogInMutation.mutateAsync(teamId)
+    .then((data) => {
+      setButtonState("success");
+      localStorage.setItem("logged", "employe," + teamId);
+      navigate("/team", { state: { id: teamId } });
+    })
+    .catch((e) => {
+      // Look into file for implementation code for error handling
+    });
+}
+```
+
+2. **Request Management**
+```typescript
+// Example from Row.tsx
+async function handleSave() {
+  await UpdateMutation.mutateAsync({ id: report.id, status: status })
+    .then((resStatus) => {
+      if (resStatus == 201) {
+        window.location.reload();
+      }
+    })
+    .catch((e) => {
+      // Look into file for implementation code for error handling
+    });
+}
+```
+
+3. **Image Handling**
+```typescript
+// Example from Report.tsx
+async function handleUpload(event: React.FormEvent<HTMLInputElement>) {
+  const target = event.target as HTMLInputElement & { files: FileList };
+  if (target.files && target.files.length > 0) {
+    const newImage: File = target.files[0];
+    fileToBase64(newImage)
+      .then((base64String) => {
+        setImage(base64String);
+      })
+      .catch((error) => {
+        console.error("Error converting file to Base64:", error);
+      });
+  }
+}
+```
+
+#### State Management
+
+The application uses a combination of:
+- Local state with `useState` for component-level state
+- React Query for server state management
+- URL state through React Router for navigation
+- localStorage for persistent authentication
+
+#### API Integration
+
+API calls are centralized in `AuthUtils.ts` and utilize axios for HTTP requests:
+- Error handling with custom `ServerError` class
+- Consistent API endpoint construction
+- Type-safe request/response handling
+
+#### Styling
+
+The application uses Tailwind CSS with DaisyUI components for:
+- Responsive design
+- Consistent theming
+- Pre-built components (buttons, cards, modals)
+- Custom styling through utility classes
+
+#### Future Improvements
+
+1. **Performance Optimization**
+   - Implement request caching
+   - Add pagination for large request lists
+   - Optimize image loading and storage
+
+2. **Feature Enhancements**
+   - Real-time notifications
+   - Advanced filtering options
+   - Enhanced route optimization
+   - Offline support
+
+3. **Security**
+   - Implement JWT authentication
+   - Add request rate limiting
+   - Enhanced error handling
+
+4. **User Experience**
+   - Add loading skeletons
+   - Implement progressive image loading
+   - Add more interactive feedback
+
 ### Database
 
 This database is designed to manage service requests, the teams handling them, and the individuals submitting them. We used mySQL.
